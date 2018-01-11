@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- <security:authentication-manager>
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="Dhruba" authorities="admin"
+					password="dahal123" />
+			</security:user-service>
+		</security:authentication-provider>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource" />
+		</security:authentication-provider>
+	</security:authentication-manager> -->
+	<!-- <security:http use-expressions="true">
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/employeelist" access="permitAll" />
+		<security:intercept-url pattern="/login" access="permitAll" />
+		<security:intercept-url pattern="/createuser" access="permitAll" />
+		<security:intercept-url pattern="/createuserform" access="permitAll" />
+		<security:intercept-url pattern="/usercreated" access="permitAll" />
+		<security:intercept-url pattern="/insertemployee" 	access="isAuthenticated()" />
+		<security:intercept-url pattern="/saveemp" 	access="isAuthenticated()" />
+		<security:intercept-url pattern="/resources/**"  access="isAuthenticated()" />
+		<security:intercept-url pattern="/**" access="permitAll" />
+		 <security:csrf disabled="true"/>
+		<security:form-login  />
+	</security:http> -->
+	
+</beans>
