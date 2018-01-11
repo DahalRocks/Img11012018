@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="divForm">
-		<sf:form class="form-style-7" style="width:300px;height:300px" action="/SimpleWebPage/loginuser"
+		<sf:form class="form-style-7" style="width:300px;height:300px" action="/loginuser"
 			commandName="userlogin">
 			<ul>
 				<li><label for="username">User Name</label> <sf:input
