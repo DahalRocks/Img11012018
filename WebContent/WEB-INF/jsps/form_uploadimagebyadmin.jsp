@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class="divForm">
-		<sf:form class="form-style-7" action="/SimpleWebPage/uploadimagebyadmin"
+		<sf:form class="form-style-7" action="/uploadimagebyadmin"
 			method="post" commandName="imagebyadmin" enctype="multipart/form-data">
 			<ul>
 				<li><label for="title">Upload Image</label> <sf:input
