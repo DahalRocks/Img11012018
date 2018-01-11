@@ -14,7 +14,7 @@
 <body>
 	<div class="divForm">
 		<sf:form class="form-style-7"
-			action="/SimpleWebPage/createtextcontent" commandName="textcontent">
+			action="/createtextcontent" commandName="textcontent">
 			<ul>
 				<li><label for="division">Page Division</label><sf:select path="division">
 				<sf:option value="1"  >One</sf:option>
