@@ -39,7 +39,7 @@
 			<li class="current"><a href="#">Home</a></li>
 			<li><a href="#">Project</a></li>
 			<li><a href="#">Achievement</a></li>
-			<li><a href="#">CV</a></li>
+			<li><a href="#">CVss</a></li>
 		</ul>
 		</nav>
 	</div>
@@ -84,7 +84,7 @@
 			src="${pageContext.request.contextPath}/resources/img/dhruba-image.jpg"
 			alt="Blogin" title="">
 		<p class="rights">
-			© 2017 Dhruba Dahal - All Rights Reserved <a href="linkedin"
+			Â© 2017 Dhruba Dahal - All Rights Reserved <a href="linkedin"
 				target="_blink">Know about me</a>
 		</p>
 		<ul class="social_profiles">
