@@ -111,7 +111,7 @@ public class LoginController {
 		        email.setText(message);
 		         
 		        // sends the e-mail
-		        //mailSender.send(email);
+		        mailSender.send(email);
 			}
 			return "redirect:createuser";
 		}
