@@ -54,7 +54,7 @@
 		});
 	</script>
 	<div class="divForm">
-		<sf:form class="form-style-7"  action="/SimpleWebPage/createuser"
+		<sf:form class="form-style-7"  action="/createuser"
 			commandName="user">
 			<ul>
 				<li><label for="fullname">Full Name</label> <sf:input
