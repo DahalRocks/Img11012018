@@ -196,8 +196,9 @@ color
 				});
 			});
 
-			$("#lnkSelect").click(function() {
+			$(".lnkSelect").click(function(event) {
 				$(".popuplst").addClass("popup");
+				event.stopPropagation();
 
 			});
 
@@ -279,14 +280,12 @@ color
 			<sf:form id="imagegallery" action=" " commandName="imagelst">
 				<c:forEach var="image" items="${ imagelst}">
 					<div class="grid-item">
-						<figure> <img
-							src="${pageContext.request.contextPath}/resources/galleryimage/${image.imagename}"
-							alt="Image" class="img-fluid tm-img"
-							style="width: 100px; height: 100px"> </figure>
-
 						<a
 							href="${pageContext.request.contextPath}/uploadselectedimage?name=${image.imagename}"
-							id="lnkSelect">Select<c:out value="${image.imageid}" /></a>
+							class="lnkSelect"><figure> <img
+							src="${pageContext.request.contextPath}/resources/galleryimage/${image.imagename}"
+							alt="Image" class="img-fluid tm-img"
+							style="width: 100px; height: 100px"> </figure></a>
 					</div>
 				</c:forEach>
 			</sf:form>
