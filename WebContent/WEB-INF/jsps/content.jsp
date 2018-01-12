@@ -36,10 +36,10 @@
 			class="h_logo" alt="logo" title=""></a>
 		<nav>
 		<ul class="main_nav">
-			<li class="current"><a href="#">Home</a></li>
-			<li><a href="#">Project</a></li>
-			<li><a href="#">Achievement</a></li>
-			<li><a href="#">CVss</a></li>
+			<li class="current"><a href="#" style="color:#fff">Home</a></li>
+			<li><a href="#" style="color:#fff">Project</a></li>
+			<li><a href="#" style="color:#fff">Achievement</a></li>
+			<li><a href="#" style="color:#fff">CVss</a></li>
 		</ul>
 		</nav>
 	</div>
