@@ -57,7 +57,8 @@
 						<div class="article_image">
 							<img
 								src="${pageContext.request.contextPath}/resources/galleryimage/${image.url}"
-								alt="${image.alttext}" title="${image.title}" tabindex="0">
+								alt="${image.alttext}" title="${image.title}" tabindex="0"
+							        style="padding-left:147px">
 						</div>
 					</c:if>
 				</c:forEach>
