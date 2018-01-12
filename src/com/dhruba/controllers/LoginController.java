@@ -93,7 +93,7 @@ public class LoginController {
 		        message+="\r\n";
 		        message+="When you get logged in, you will have a blog having 5 different contents.";
 		        message+="\r\n";
-		        message+="Each of the contents has a link saying: \"image upload link for this content \", at the bottom. Click this link to get an image upload form.";
+		        message+="Each of the contents has an image upload button at the bottom. Click that button to get an image upload form.";
 		        message+="\r\n";
 		        message+="Use this form and upload an image that you think is suitable for the contents.";
 		        message+="\r\n";
