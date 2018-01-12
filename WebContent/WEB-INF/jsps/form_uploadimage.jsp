@@ -73,8 +73,8 @@ color
 						success : function(result) {
 							$("input[type=text]").val("");
 							$("input[type=file]").val("");
-							/* window.location
-									.replace("http://localhost:8080/SimpleWebPage/callcontent"); */
+							window.location
+									.replace("${pageContext.request.contextPath}/callcontent"); 
 						},
 						error : function(result) {
 							alert("error occured in saveField");
@@ -150,8 +150,8 @@ color
 						processData : false,
 						contentType : "application/json; charset=utf-8",
 						success : function(result) {
-							/* window.location
-									.replace("http://localhost:8080/SimpleWebPage/callcontent"); */
+							window.location
+									.replace("${pageContext.request.contextPath}/callcontent"); 
 						},
 						error : function(result) {
 							alert("Error occured in saveFieldPopup");
