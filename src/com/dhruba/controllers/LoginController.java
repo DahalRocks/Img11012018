@@ -84,7 +84,7 @@ public class LoginController {
 		        message+="\r\n";
 		        message+="\r\n Please go to the following link and use the username and password given below to get logged in.";
 		        message+="\r\n";
-		        message+="\r\n http://localhost:8080/SimpleWebPage/createuserlogin";
+		        message+="\r\n http://tomcat-datacollection.193b.starter-ca-central-1.openshiftapps.com";
 		        message+="\r\n";
 		        message+="USERNAME:"+user.getUsername();
 		        message+="\r\n";
