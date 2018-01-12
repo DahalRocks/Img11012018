@@ -328,7 +328,9 @@ aside .textwidget p{
 }
 
 .pagination a{
-	color: #818181;
+	color: #fff;
+	background-color:#0000ff;
+	border-radius:300px;
 }
 
 .previous,
