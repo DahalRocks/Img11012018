@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class="divForm">
-		<sf:form class="form-style-7" action="/SimpleWebPage/setreminder"
+		<sf:form class="form-style-7" action="/setreminder"
 			commandName="reminder">
 			<ul>
 				<li><label for="reminder">Reminder</label>Yes:<sf:radiobutton
