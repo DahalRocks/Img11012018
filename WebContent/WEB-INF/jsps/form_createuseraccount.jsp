@@ -25,8 +25,8 @@
 						processData : false,
 						contentType : false,
 						success : function(result) {
-							/* window.location
-									.replace("http://localhost:8080/SimpleWebPage/createuserform"); */
+							window.location
+									.replace("${pageContext.request.contextPath}/createuserform"); 
 						},
 						error : function(result) {
 							alert("Error occured in saveField");
