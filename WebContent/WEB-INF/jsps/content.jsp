@@ -69,7 +69,8 @@
 					
 					
 					<a id="linkPicOne"
-						href="${pageContext.request.contextPath}/createimageform/${loop.count}/${text.contenttitle}">
+						href="${pageContext.request.contextPath}/createimageform/${loop.count}/${text.contenttitle}"
+					   style="text-decoration:none;background-color:#6167ea;border-radius:300px;color:#fff">
 						image upload link for this content </a>
 				</div>
 				</article>
