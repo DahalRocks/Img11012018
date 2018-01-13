@@ -160,7 +160,8 @@ public class LoginController {
 			if (userService.login(user)) {
 				user = userService.getUserDetailByName(user);
 				session.setAttribute("user", user);
-				reminder = reminderService.getReminder();
+				//reminder = reminderService.getReminder();
+				reminder.setCheck(user.getReminded());
 				session.setAttribute("reminder", reminder);
 				return "redirect:callcontentfirsttime";
 			} else {
