@@ -102,6 +102,16 @@ public class MyController {
 		
 	}
 	
+	@RequestMapping(value ="/checkreminder", method = {RequestMethod.GET, RequestMethod.POST},headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object getReminder(HttpSession session)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		Reminder reminder=(Reminder)session.getAttribute("reminder");
+		ObjectMapper objMap = new ObjectMapper();
+		String str = new String();
+		str = objMap.writeValueAsString(reminder);
+		return str;
+	}
+	
 	@RequestMapping(value = "/callgallery")
 	public String callImageGallery(Model model) {
 		List<AdminImage>imagelst=imageService.getImageList();
