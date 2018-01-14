@@ -106,27 +106,27 @@ color
 				}
 			});
 		}
+		function handleData(responseData) {
+
+			if (responseData.check) {
+				$(".popup").addClass("popup");
+				$(".par").removeClass("par");
+				$("#dialog").dialog({
+					width : 700
+				});
+			} else {
+
+				saveFieldWithAltText();
+			}
+		}
 
 		function doCall() {
+
 			$.ajax({
 				type : 'GET',
 				dataType : 'json',
-				url : '${pageContext.request.contextPath}/getReminder',
-				success : function(data) {
-					if (data.reminded) {
-
-						$(".popup").addClass("popup");
-						$(".par").removeClass("par");
-
-						$("#dialog").dialog({
-							width : 700
-						});
-					} else {
-
-						saveFieldWithAltText();
-
-					}
-				},
+				url : "${pageContext.request.contextPath}/checkreminder",
+				success : handleData,
 				error : function() {
 					alert("error occured");
 				}
