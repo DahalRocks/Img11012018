@@ -285,7 +285,7 @@ color
 							class="lnkSelect"><figure> <img
 							src="${pageContext.request.contextPath}/resources/galleryimage/${image.imagename}"
 							alt="Image" class="img-fluid tm-img"
-							style="width: 100px; height: 100px"> </figure></a>
+							style="width: 200px; height: 200px"> </figure></a>
 					</div>
 				</c:forEach>
 			</sf:form>
