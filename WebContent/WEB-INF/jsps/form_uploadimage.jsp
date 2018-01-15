@@ -216,7 +216,7 @@ color
 					value="Click to select an image" /></li>
 				<li><img alt=""
 					src="${pageContext.request.contextPath}/resources/galleryimage/${imagename}"
-					style="width: 50px; height: 50px"> <label id="lblImageName"
+					style="width: 200px; height: 200px"> <label id="lblImageName"
 					aria-label="nameofimage">${imagename}</label></li>
 				<li><label for="txtTitle">Title</label> <input type="text"
 					name="title" id="txtTitle" /> <span>Enter title for image</span></li>
