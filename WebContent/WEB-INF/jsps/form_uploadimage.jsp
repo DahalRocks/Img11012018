@@ -23,13 +23,11 @@
 .popup {
 	visibility: hidden;
 }
+
+.liAltText {
+	visibility: hidden;
+}
 color
-
-
-
-
-
-
 
 
 
@@ -43,25 +41,19 @@ color
 
 
 
-
-
 ;
 </style>
 </head>
-
 <body>
 	<script type="text/javascript">
 		function saveField() {
-
 			var strField = {
 				"title" : $("#txtTitle").val(),
 				"caption" : $("#txtCaption").val(),
 				"alttext" : $("#txtAltText").val(),
 				"description" : $("#txtDescription").val()
 			}
-
 			var pdata = JSON.stringify(strField);
-
 			$
 					.ajax({
 						dataType : 'json',
@@ -74,14 +66,13 @@ color
 							$("input[type=text]").val("");
 							$("input[type=file]").val("");
 							window.location
-									.replace("${pageContext.request.contextPath}/callcontent"); 
+									.replace("${pageContext.request.contextPath}/callcontent");
 						},
 						error : function(result) {
 							alert("error occured in saveField");
 						}
 					});
 		}
-
 		function saveFieldForPopUp() {
 			var strField = {
 				"title" : $("#txtTitle").val(),
@@ -107,7 +98,6 @@ color
 			});
 		}
 		function handleData(responseData) {
-
 			if (responseData.check) {
 				$(".popup").addClass("popup");
 				$(".par").removeClass("par");
@@ -115,13 +105,10 @@ color
 					width : 700
 				});
 			} else {
-
 				saveFieldWithAltText();
 			}
 		}
-
 		function doCall() {
-
 			$.ajax({
 				type : 'GET',
 				dataType : 'json',
@@ -132,15 +119,11 @@ color
 				}
 			});
 		}
-
 		function saveFieldWithAltText() {
-
 			var strField = {
 				"alttext" : $("#txtPopupAltText").val()
 			};
-
 			var fieldData = JSON.stringify(strField);
-
 			$
 					.ajax({
 						dataType : 'json',
@@ -151,57 +134,58 @@ color
 						contentType : "application/json; charset=utf-8",
 						success : function(result) {
 							window.location
-									.replace("${pageContext.request.contextPath}/callcontent"); 
+									.replace("${pageContext.request.contextPath}/callcontent");
 						},
 						error : function(result) {
 							alert("Error occured in saveFieldPopup");
 						}
 					});
 		}
-
 		$(document).ready(function() {
 			$("#btnOk").click(function() {
-
 				var el = document.getElementById('lblImageName');
 				var text = (el.innerText || el.textContent);
 				if (text.length != 0) {
 					var altText = $("#txtAltText").val();
-
 					if (altText.length == 0) {
 						saveFieldForPopUp();
 						doCall();
-					}
-
-					else {
+					} else {
 						saveField();
 					}
 				} else {
 					alert("Please select an image before upload!!");
-
 				}
 			});
 			$("#btnPopUpSubmit").click(function() {
 				saveFieldWithAltText();
-
 			});
 			$("#linkDialogClose").click(function() {
 				saveFieldWithAltText();
-
 			});
 			$("#btnSelect").click(function() {
 				$(".popup").removeClass("popup");
-
 				$("#imagelistDialog").dialog({
 					width : 700
 				});
 			});
-
 			$(".lnkSelect").click(function(event) {
 				$(".popuplst").addClass("popup");
 				event.stopPropagation();
-
 			});
 
+			$('input:radio').click(function() {
+				
+				if ($(this).val()==='true'){
+					$('.editli').removeClass('liAltText');
+					$('li.editli').parent().find('li.fromstart').remove();
+					$('#txtPopupAltText').focus();
+				}
+				else{
+					saveFieldWithAltText();
+				}
+								
+			});
 		});
 	</script>
 	<div class="divForm">
@@ -234,9 +218,8 @@ color
 					href="${pageContext.request.contextPath}/callcontent">Cancel</a></li>
 			</ul>
 		</sf:form>
-
 	</div>
-	<div id="dialog" title="Reminder">
+	<%-- <div id="dialog" title="Reminder">
 		<div class="divForm par">
 			<form class="form-style-7" action="" method="post"
 				commandName="imagename">
@@ -263,17 +246,66 @@ color
 					<li><img
 						src="${pageContext.request.contextPath}/resources/galleryimage/${imagename}"
 						alt="" style="width: 100px; height: 100px" id="popupImg"></li>
-
 					<li><label for="alttext">Alt-text</label> <textarea
 							id="txtPopupAltText" style="width: 200px; height: 50px"></textarea>
 						<br /> <span>Enter alt-text for image</span></li>
-
 					<li><input id="btnPopUpSubmit" type="button" value="SUBMIT" />
 						or <a href="#" id="linkDialogClose">CLOSE</a></li>
 				</ul>
 			</form>
 		</div>
+	</div> --%>
+
+	<div id="dialog" title="Reminder">
+		<div class="divForm par">
+			<form class="form-style-7" action="" method="post"
+				commandName="imagename">
+				<ul>
+					<li class="fromstart">
+						<p style="font-family: arial; font-size: 15px">
+							<span style="color: red">Oops!! Sorry for the
+								interruption!! But you forgot to write an alt text.</span><br /> <br>
+							<b>No ALT TEXT means: <br> <br> 1) less chance to find your image by the Google search.<br> <br>
+								2) no idea about your image to millions of visual impaired Web users and slow
+								internet users who can't download this image.
+
+							</b>
+
+						</p>
+					</li>
+					<li class="fromstart">
+						<p>Do you want to write an ALT TEXT for your image?</p>
+					</li>
+					<li class="fromstart"><label for="">Yes</label><input
+						name="rdbAlt" type="radio" value="true" /></li>
+					<li class="fromstart"><label for="">No</label><input
+						name="rdbAlt" type="radio" value="false" /></li>
+
+					<li class="editli liAltText"><label for="liExample">Example</label>
+						<img
+						src="${pageContext.request.contextPath}/resources/img/birdsexample.jpg"
+						alt="" style="width: 100px; height: 100px" id="liExample">
+						<p>
+							Alt text:<span style="font-weight: bold">Birds sitting on
+								a bar</span>
+						</p></li>
+
+
+					<li class="editli liAltText"><label for="popupImg">Your
+							Image</label> <img
+						src="${pageContext.request.contextPath}/resources/galleryimage/${imagename}"
+						alt="" style="width: 200px; height: 200px" id="popupImg"></li>
+					<li class=" editli liAltText"><label for="alttext">Alt-text</label>
+						<textarea id="txtPopupAltText" style="width: 100%; height: 50px"></textarea>
+						<br /> <span>Enter alt-text for image</span></li>
+					<li class=" editli liAltText"><input id="btnPopUpSubmit"
+						type="button" value="SUBMIT" /> or <a href="#"
+						id="linkDialogClose">close</a></li>
+				</ul>
+			</form>
+		</div>
 	</div>
+
 
 	<div id="imagelistDialog" title="Image list">
 		<div class="divForm popuplst popup">
@@ -283,9 +315,9 @@ color
 						<a
 							href="${pageContext.request.contextPath}/uploadselectedimage?name=${image.imagename}"
 							class="lnkSelect"><figure> <img
-							src="${pageContext.request.contextPath}/resources/galleryimage/${image.imagename}"
-							alt="Image" class="img-fluid tm-img"
-							style="width: 200px; height: 200px"> </figure></a>
+								src="${pageContext.request.contextPath}/resources/galleryimage/${image.imagename}"
+								alt="Image" class="img-fluid tm-img"
+								style="width: 200px; height: 200px"> </figure></a>
 					</div>
 				</c:forEach>
 			</sf:form>
