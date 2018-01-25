@@ -6,12 +6,15 @@ import java.io.File;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.servlet.ServletContext;
-
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,6 +28,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.dhruba.image.AdminImage;
@@ -49,17 +55,20 @@ public class ImageController {
 	@Autowired
 	User user;
 	@Autowired
-    private JavaMailSender mailSender;
+	private JavaMailSender mailSender;
+	@Autowired
+	private AdminImage adminImage;
 
 	@RequestMapping(value = "/createimageform/{division}/{title}")
-	public String callImageForm(Model model, @PathVariable int division,@PathVariable String title, HttpSession session) {
+	public String callImageForm(Model model, @PathVariable int division, @PathVariable String title,
+			HttpSession session) {
 		session.setAttribute("division", division);
 		model.addAttribute("image", new Image());
 		model.addAttribute("imagelst", imageService.getImageList());
 		model.addAttribute("title", title);
 		session.setAttribute("imagename", "");
 		return "form_uploadimage";
-		//return "redirect:content";
+		// return "redirect:content";
 	}
 
 	@RequestMapping(value = "/uploadselectedimage")
@@ -72,7 +81,7 @@ public class ImageController {
 
 	@RequestMapping(value = "/calladminform")
 	public String callImageFormByAdmin(Model model) {
-		model.addAttribute("imagebyadmin", new Image());
+		model.addAttribute("imagebyadmin", new AdminImage());
 		return "form_uploadimagebyadmin";
 		// return "form_uploadimage";
 	}
@@ -87,31 +96,29 @@ public class ImageController {
 	@RequestMapping(value = "/callimagelist")
 	public String callImageList(Model model, HttpSession session) {
 		model.addAttribute("imagelst", imageService.getImageList());
-		
-		User user= (User)session.getAttribute("user");
-		
+
+		User user = (User) session.getAttribute("user");
+
 		// creates a simple e-mail object
-        SimpleMailMessage email = new SimpleMailMessage();
-        String recipientAddress="iechha26@gmail.com";
-        String subject="Data has been collected for the user:"+user.getUsername();
-        String message="Please check the database and make sure of it. Thank you!!";
-        
-        email.setTo(recipientAddress);
-        email.setSubject(subject);
-        email.setText(message);
-         
-        // sends the e-mail
-        mailSender.send(email);
+		SimpleMailMessage email = new SimpleMailMessage();
+		String recipientAddress = "iechha26@gmail.com";
+		String subject = "Data has been collected for the user:" + user.getUsername();
+		String message = "Please check the database and make sure of it. Thank you!!";
+
+		email.setTo(recipientAddress);
+		email.setSubject(subject);
+		email.setText(message);
+
+		// sends the e-mail
+		mailSender.send(email);
 		return "imagegallery";
-		
+
 	}
 
-	
-	
 	@RequestMapping(value = "/uploadimage", method = { RequestMethod.POST })
 	public String uploadImage(@Valid Image image, BindingResult result, ModelMap modelMap, HttpSession session,
 			Model model) throws IOException {
-		
+
 		if (result.hasErrors()) {
 			model.addAttribute("image", image);
 			model.addAttribute("imagelst", imageService.getImageList());
@@ -138,32 +145,85 @@ public class ImageController {
 
 	@RequestMapping(value = "/uploadimagebyadmin", method = { RequestMethod.POST })
 	public String uploadImageByAdmin(@Valid AdminImage image, BindingResult result, ModelMap modelMap,
-			@RequestParam CommonsMultipartFile file, Model model) throws IOException {
+
+			@RequestParam CommonsMultipartFile file, @RequestParam CommonsMultipartFile randomimagefile,
+
+			@RequestParam CommonsMultipartFile similarimagefile, Model model) throws IOException {
 		if (result.hasErrors() || file.isEmpty()) {
 			model.addAttribute("imagebyadmin", image);
 			modelMap.put(BindingResult.class.getName() + ".imagebyadmin", result);
 			return "form_uploadimagebyadmin";
+		}
 
-		} else {
+		else {
+
 			String webappRoot = context.getRealPath("/");
 			String relativeFolder = File.separator + "resources" + File.separator + "galleryimage" + File.separator;
-			String fileName = webappRoot + relativeFolder + file.getOriginalFilename();
-			File newFile = new File(fileName);
-			if (!newFile.exists())
-				newFile.createNewFile();
-			// get file as a byte array
-			BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
-			try {
-				byte[] bytes = file.getBytes();
-				// write bytes to the new file
-				fileWriter.write(bytes);
-			} catch (Exception e) {
 
-			} finally {
-				fileWriter.close();
+			String fileName = webappRoot + relativeFolder + file.getOriginalFilename();
+			String randomFileName = webappRoot + relativeFolder + randomimagefile.getOriginalFilename();
+			String similarFileName = webappRoot + relativeFolder + similarimagefile.getOriginalFilename();
+
+			File newFile = new File(fileName);
+			File randomFile = new File(randomFileName);
+			File similarFile = new File(similarFileName);
+			
+			if (image.isHaveSubimage()) {
+				if (!newFile.exists() && !randomFile.exists() && !similarFile.exists())
+
+				newFile.createNewFile();
+				randomFile.createNewFile();
+				similarFile.createNewFile();
+
+				BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
+				BufferedOutputStream fileWriterforRandomFile = new BufferedOutputStream(
+						new FileOutputStream(randomFile));
+				BufferedOutputStream fileWriterforSimilarFile = new BufferedOutputStream(
+						new FileOutputStream(similarFile));
+
+				try {
+					byte[] bytes = file.getBytes();
+					byte[] bytesForRandomImage = randomimagefile.getBytes();
+					byte[] bytesForSimilarImage = similarimagefile.getBytes();
+
+					// write bytes to the new files
+					fileWriter.write(bytes);
+					fileWriterforRandomFile.write(bytesForRandomImage);
+					fileWriterforSimilarFile.write(bytesForSimilarImage);
+
+					image.setImagename(file.getOriginalFilename());
+					image.setRandomimage(randomimagefile.getOriginalFilename());
+					image.setSimilarimage(similarimagefile.getOriginalFilename());
+
+					imageService.createImageByAdmin(image);
+					imageService.createRandomSubImage(image);
+					imageService.createSimilarSubImage(image);
+
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					fileWriter.close();
+					fileWriterforRandomFile.close();
+					fileWriterforSimilarFile.close();
+				}
+			} else {
+				newFile.createNewFile();
+				BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
+				try {
+					byte[] bytes = file.getBytes();
+					// write bytes to the new files
+					fileWriter.write(bytes);
+					image.setImagename(file.getOriginalFilename());
+
+					imageService.createImageByAdmin(image);
+
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				} finally {
+					fileWriter.close();
+				}
 			}
-			image.setImagename(file.getOriginalFilename());
-			imageService.createImageByAdmin(image);
+
 		}
 		return "redirect:/calladminform";
 	}
