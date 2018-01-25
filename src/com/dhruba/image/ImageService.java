@@ -13,9 +13,12 @@ import com.dhruba.page.Page;
 public class ImageService {
 	@Autowired
 	private ImageDao imageDao;
-	
+
 	@Autowired
 	Image objImage;
+
+	@Autowired
+	AdminImage objAdminImage;
 
 	public boolean createImage(Image image) {
 		boolean isCreated = true;
@@ -23,7 +26,7 @@ public class ImageService {
 			imageDao.saveImage(image);
 		} catch (DataAccessException e) {
 			isCreated = false;
-			System.out.println(e.getMessage());
+			
 		}
 		return isCreated;
 	}
@@ -32,9 +35,40 @@ public class ImageService {
 		boolean isCreated = true;
 		try {
 			imageDao.saveImageByAdmin(image);
+			
 		} catch (DataAccessException e) {
-				isCreated = false;
-				System.out.println(e.getMessage());
+			isCreated = false;
+			
+		}
+		return isCreated;
+	}
+
+	public boolean createRandomSubImage(AdminImage image) {
+		boolean isCreated = true;
+		try {
+			objAdminImage = imageDao.selectLastInsertImageId();
+			image.setParentid(objAdminImage.getImageid());
+			image.setImagetype("random");
+			imageDao.saveRandomSubImage(image);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			
+			isCreated = false;
+		}
+		return isCreated;
+	}
+
+	public boolean createSimilarSubImage(AdminImage image) {
+		boolean isCreated = true;
+		try {
+			objAdminImage = imageDao.selectLastInsertImageId();
+			image.setParentid(objAdminImage.getImageid());
+			image.setImagetype("similar");
+			imageDao.saveSimilarSubImage(image);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			
+			isCreated = false;
 		}
 		return isCreated;
 	}
