@@ -19,7 +19,24 @@ public class AdminImage {
 	private String similarimage;
 	private int parentid;
 	private String imagetype;
+	private String subimagename;
+	private int subimageid;
 	
+	
+	
+	
+	public int getSubimageid() {
+		return subimageid;
+	}
+	public void setSubimageid(int subimageid) {
+		this.subimageid = subimageid;
+	}
+	public String getSubimagename() {
+		return subimagename;
+	}
+	public void setSubimagename(String subimagename) {
+		this.subimagename = subimagename;
+	}
 	public String getImagetype() {
 		return imagetype;
 	}
