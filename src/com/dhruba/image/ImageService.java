@@ -31,6 +31,17 @@ public class ImageService {
 		return isCreated;
 	}
 
+	public List<AdminImage> getSubImagelst(AdminImage image){
+		List<AdminImage>lstSubImage=new ArrayList<>();
+		try {
+			lstSubImage= imageDao.getSubImagelst(image);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+		}
+		return lstSubImage;
+		
+	}
+	
 	public boolean createImageByAdmin(AdminImage image) {
 		boolean isCreated = true;
 		try {
@@ -57,6 +68,42 @@ public class ImageService {
 		}
 		return isCreated;
 	}
+	
+	public boolean updateRandomImage(AdminImage image){
+		boolean isUpdated=true;
+		try {
+			imageDao.updateRandomImage(image);
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+			isUpdated=false;
+		}
+		return isUpdated;
+	}
+	
+	
+	public boolean deleteParentImage(AdminImage image){
+		boolean isDeleted=true;
+		try {
+			imageDao.deleteParentImage(image);
+			imageDao.deleteSubImage(image);
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+			isDeleted=false;
+		}
+		return isDeleted;
+	}
+	
+	
+	public boolean updateSimilarImage(AdminImage image){
+		boolean isUpdated=true;
+		try {
+			imageDao.updateRandomImage(image);
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+			isUpdated=false;
+		}
+		return isUpdated;
+	}
 
 	public boolean createSimilarSubImage(AdminImage image) {
 		boolean isCreated = true;
@@ -78,6 +125,12 @@ public class ImageService {
 		lstImage = imageDao.getImageList();
 		return lstImage;
 	}
+	public List<AdminImage> getImageListForAdmin() {
+		List<AdminImage> lstImage = new ArrayList<AdminImage>();
+		lstImage = imageDao.getImageListForAdmin();
+		return lstImage;
+	}
+	
 
 	public List<Image> getImageContentList(Page page) {
 		List<Image> lstImage = new ArrayList<Image>();
