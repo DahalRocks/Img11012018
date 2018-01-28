@@ -86,29 +86,29 @@ public class ImageController {
 
 	@RequestMapping(value = "/calladminform")
 	public String callImageFormByAdmin(Model model) {
-		List<AdminImage>imagelst=imageService.getImageListForAdmin();
-		List<AdminImage>parentimagelst=imageService.getImageList();
+		List<AdminImage> imagelst = imageService.getImageListForAdmin();
+		List<AdminImage> parentimagelst = imageService.getImageList();
 		model.addAttribute("imagebyadmin", new AdminImage());
 		model.addAttribute("parentimagelst", parentimagelst);
 		model.addAttribute("imagelst", imagelst);
 		return "form_uploadimagebyadmin";
 		// return "form_uploadimage";
 	}
-	
-	@RequestMapping(value="/getSubImage", method = {
+
+	@RequestMapping(value = "/getSubImage", method = {
 			RequestMethod.POST }, headers = "Accept=*/*", produces = "application/json")
-	public @ResponseBody Object getSubImage(@RequestBody String imageid, Model model) throws JsonParseException, JsonMappingException, IOException{
+	public @ResponseBody Object getSubImage(@RequestBody String imageid, Model model)
+			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		AdminImage objImage = mapper.readValue(imageid, AdminImage.class);
-		List<AdminImage> subImageList=imageService.getSubImagelst(objImage);
+		List<AdminImage> subImageList = imageService.getSubImagelst(objImage);
 		model.addAttribute("subImageList", subImageList);
-		//return "redirect:calladminform";
+		// return "redirect:calladminform";
 		ObjectMapper objMap = new ObjectMapper();
 		String str = new String();
 		str = objMap.writeValueAsString(subImageList);
 		return str;
-		
-		
+
 	}
 
 	@RequestMapping(value = "/callpopup")
@@ -168,8 +168,6 @@ public class ImageController {
 		return "redirect:/callcontent";
 	}
 
-	
-
 	@RequestMapping(value = "/uploadimagebyadmin", method = { RequestMethod.POST })
 	public String uploadImageByAdmin(@Valid AdminImage image, BindingResult result, ModelMap modelMap,
 
@@ -187,19 +185,15 @@ public class ImageController {
 			String webappRoot = context.getRealPath("/");
 			String relativeFolder = File.separator + "resources" + File.separator + "galleryimage" + File.separator;
 
-			
-			String img1=file.getOriginalFilename();
-			String img1withoutspace=img1.replaceAll("\\s", "");
-			
-			
-			String img2=randomimagefile.getOriginalFilename();
-			String img2withoutspace=img2.replaceAll("\\s", "");
-			
-			
-			String img3=similarimagefile.getOriginalFilename();
-			String img3withoutspace=img3.replaceAll("\\s", "");
-			
-			
+			String img1 = file.getOriginalFilename();
+			String img1withoutspace = img1.replaceAll("\\s", "");
+
+			String img2 = randomimagefile.getOriginalFilename();
+			String img2withoutspace = img2.replaceAll("\\s", "");
+
+			String img3 = similarimagefile.getOriginalFilename();
+			String img3withoutspace = img3.replaceAll("\\s", "");
+
 			String fileName = webappRoot + relativeFolder + img1withoutspace;
 			String randomFileName = webappRoot + relativeFolder + img2withoutspace;
 			String similarFileName = webappRoot + relativeFolder + img3withoutspace;
@@ -207,58 +201,62 @@ public class ImageController {
 			File newFile = new File(fileName);
 			File randomFile = new File(randomFileName);
 			File similarFile = new File(similarFileName);
-			
+
 			if (image.isHaveSubimage()) {
-				if (!newFile.exists() && !randomFile.exists() && !similarFile.exists())
+				if (!newFile.exists() && !randomFile.exists() && !similarFile.exists()) {
 
-				newFile.createNewFile();
-				randomFile.createNewFile();
-				similarFile.createNewFile();
+					newFile.createNewFile();
+					randomFile.createNewFile();
+					similarFile.createNewFile();
 
-				BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
-				BufferedOutputStream fileWriterforRandomFile = new BufferedOutputStream(
-						new FileOutputStream(randomFile));
-				BufferedOutputStream fileWriterforSimilarFile = new BufferedOutputStream(
-						new FileOutputStream(similarFile));
+					BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
+					BufferedOutputStream fileWriterforRandomFile = new BufferedOutputStream(
+							new FileOutputStream(randomFile));
+					BufferedOutputStream fileWriterforSimilarFile = new BufferedOutputStream(
+							new FileOutputStream(similarFile));
 
-				try {
-					byte[] bytes = file.getBytes();
-					byte[] bytesForRandomImage = randomimagefile.getBytes();
-					byte[] bytesForSimilarImage = similarimagefile.getBytes();
+					try {
+						byte[] bytes = file.getBytes();
+						byte[] bytesForRandomImage = randomimagefile.getBytes();
+						byte[] bytesForSimilarImage = similarimagefile.getBytes();
 
-					// write bytes to the new files
-					fileWriter.write(bytes);
-					fileWriterforRandomFile.write(bytesForRandomImage);
-					fileWriterforSimilarFile.write(bytesForSimilarImage);
+						// write bytes to the new files
+						fileWriter.write(bytes);
+						fileWriterforRandomFile.write(bytesForRandomImage);
+						fileWriterforSimilarFile.write(bytesForSimilarImage);
 
-					image.setImagename(img1withoutspace);
-					image.setRandomimage(img2withoutspace);
-					image.setSimilarimage(img3withoutspace);
+					} catch (Exception e) {
 
-					imageService.createImageByAdmin(image);
-					imageService.createRandomSubImage(image);
-					imageService.createSimilarSubImage(image);
+					} finally {
+						fileWriter.close();
+						fileWriterforRandomFile.close();
+						fileWriterforSimilarFile.close();
+					}
 
-				} catch (Exception e) {
-					
-				} finally {
-					fileWriter.close();
-					fileWriterforRandomFile.close();
-					fileWriterforSimilarFile.close();
 				}
-			} else {
+
+				image.setImagename(img1withoutspace);
+				image.setRandomimage(img2withoutspace);
+				image.setSimilarimage(img3withoutspace);
+
+				imageService.createImageByAdmin(image);
+				imageService.createRandomSubImage(image);
+				imageService.createSimilarSubImage(image);
+			}
+
+			else {
 				newFile.createNewFile();
 				BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
 				try {
 					byte[] bytes = file.getBytes();
 					// write bytes to the new files
 					fileWriter.write(bytes);
-					image.setImagename(file.getOriginalFilename());
+					image.setImagename(img1withoutspace);
 
 					imageService.createImageByAdmin(image);
 
 				} catch (Exception e) {
-					
+
 				} finally {
 					fileWriter.close();
 				}
@@ -267,128 +265,128 @@ public class ImageController {
 		}
 		return "redirect:/calladminform";
 	}
-	
-	@RequestMapping(value="/setRandomId", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
-	public @ResponseBody Object setRandomId(@RequestBody String imageString, HttpSession session) throws JsonParseException, JsonMappingException, IOException{
-		
-			
+
+	@RequestMapping(value = "/setRandomId", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object setRandomId(@RequestBody String imageString, HttpSession session)
+			throws JsonParseException, JsonMappingException, IOException {
+
 		ObjectMapper mapper = new ObjectMapper();
 		AdminImage objImage = mapper.readValue(imageString, AdminImage.class);
-		
+
 		session.setAttribute("subimageidforrandom", objImage.getSubimageid());
-		
-		String result=new String("true");
-		
-		
+
+		String result = new String("true");
+
 		return result;
 	}
-	@RequestMapping(value="/updateRandomImg", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
-	public @ResponseBody String updateRandomImg(MultipartHttpServletRequest request, HttpServletResponse response, HttpSession session) throws JsonGenerationException, JsonMappingException, IOException{
-		
-		Iterator<String>itr=request.getFileNames();
-		MultipartFile mpf=request.getFile(itr.next());
-		
+
+	@RequestMapping(value = "/updateRandomImg", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody String updateRandomImg(MultipartHttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws JsonGenerationException, JsonMappingException, IOException {
+
+		Iterator<String> itr = request.getFileNames();
+		MultipartFile mpf = request.getFile(itr.next());
+
 		String webappRoot = context.getRealPath("/");
 		String relativeFolder = File.separator + "resources" + File.separator + "galleryimage" + File.separator;
-		
-		String randomImageWithSpace=mpf.getOriginalFilename();
-		String randomImageWithoutSpace=randomImageWithSpace.replaceAll("\\s", "");
-		
+
+		String randomImageWithSpace = mpf.getOriginalFilename();
+		String randomImageWithoutSpace = randomImageWithSpace.replaceAll("\\s", "");
+
 		String fileName = webappRoot + relativeFolder + randomImageWithoutSpace;
-		
-		
+
 		File newFile = new File(fileName);
-		
-		if (!newFile.exists()){
+
+		if (!newFile.exists()) {
 			newFile.createNewFile();
 			BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
 			try {
 				byte[] bytes = mpf.getBytes();
 				fileWriter.write(bytes);
 			} catch (Exception e) {
-				
+
 			} finally {
 				fileWriter.close();
 			}
-			
+
 		}
 		adminImage.setImagename(randomImageWithoutSpace);
-		int subimageid=(int)session.getAttribute("subimageidforrandom");
-		
+		int subimageid = (int) session.getAttribute("subimageidforrandom");
+
 		adminImage.setSubimageid(subimageid);
 		adminImage.setSubimagename(randomImageWithoutSpace);
 		imageService.updateRandomImage(adminImage);
 		return "Update successful";
-	
+
 	}
-	
-	@RequestMapping(value="/setSimilarId", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
-	public @ResponseBody Object setSimilarId(@RequestBody String imageString, HttpSession session) throws JsonParseException, JsonMappingException, IOException{
-					
+
+	@RequestMapping(value = "/setSimilarId", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object setSimilarId(@RequestBody String imageString, HttpSession session)
+			throws JsonParseException, JsonMappingException, IOException {
+
 		ObjectMapper mapper = new ObjectMapper();
 		AdminImage objImage = mapper.readValue(imageString, AdminImage.class);
-		
+
 		session.setAttribute("subimageidforsimilar", objImage.getSubimageid());
-		
-		String result=new String("true");
-		
-		
+
+		String result = new String("true");
+
 		return result;
 	}
-	
-	@RequestMapping(value="/deleteParentImage", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
-	public @ResponseBody Object deleteParentImage(@RequestBody String imageString, HttpSession session) throws JsonParseException, JsonMappingException, IOException{
-					
+
+	@RequestMapping(value = "/deleteParentImage", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object deleteParentImage(@RequestBody String imageString, HttpSession session)
+			throws JsonParseException, JsonMappingException, IOException {
+
 		ObjectMapper mapper = new ObjectMapper();
 		AdminImage objImage = mapper.readValue(imageString, AdminImage.class);
-		
+
 		imageService.deleteParentImage(objImage);
-		
-		String result=new String("true");
-		
-		
+
+		String result = new String("true");
+
 		return result;
 	}
-	
-	@RequestMapping(value="/updateSimilarImg", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
-	public @ResponseBody String updateSimilarImg(MultipartHttpServletRequest request, HttpServletResponse response, HttpSession session) throws JsonGenerationException, JsonMappingException, IOException{
-		
-		Iterator<String>itr=request.getFileNames();
-		MultipartFile mpf=request.getFile(itr.next());
-		
+
+	@RequestMapping(value = "/updateSimilarImg", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody String updateSimilarImg(MultipartHttpServletRequest request, HttpServletResponse response,
+			HttpSession session) throws JsonGenerationException, JsonMappingException, IOException {
+
+		Iterator<String> itr = request.getFileNames();
+		MultipartFile mpf = request.getFile(itr.next());
+
 		String webappRoot = context.getRealPath("/");
 		String relativeFolder = File.separator + "resources" + File.separator + "galleryimage" + File.separator;
-		
-		String similarImageWithSpace=mpf.getOriginalFilename();
-		String similarImageWithoutSpace=similarImageWithSpace.replaceAll("\\s", "");
-		
+
+		String similarImageWithSpace = mpf.getOriginalFilename();
+		String similarImageWithoutSpace = similarImageWithSpace.replaceAll("\\s", "");
+
 		String fileName = webappRoot + relativeFolder + similarImageWithoutSpace;
-		
-		
+
 		File newFile = new File(fileName);
-		
-		if (!newFile.exists()){
+
+		if (!newFile.exists()) {
 			newFile.createNewFile();
 			BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
 			try {
 				byte[] bytes = mpf.getBytes();
 				fileWriter.write(bytes);
 			} catch (Exception e) {
-				
+
 			} finally {
 				fileWriter.close();
 			}
-			
+
 		}
 		adminImage.setImagename(similarImageWithoutSpace);
-		int subimageid=(int)session.getAttribute("subimageidforsimilar");
-		
+		int subimageid = (int) session.getAttribute("subimageidforsimilar");
+
 		adminImage.setSubimageid(subimageid);
 		adminImage.setSubimagename(similarImageWithoutSpace);
 		imageService.updateSimilarImage(adminImage);
-		
+
 		return "Update successful";
-	
+
 	}
 
 }
