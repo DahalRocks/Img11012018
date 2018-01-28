@@ -96,7 +96,7 @@ h1:after {
 
 	<div class="divForm">
 		<sf:form class="form-style-7"
-			action="/SimpleWebPage/uploadimagebyadmin" method="post"
+			action="/uploadimagebyadmin" method="post"
 			commandName="imagebyadmin" enctype="multipart/form-data">
 			<ul>
 				<li><label for="title">Upload Image</label> <sf:input
@@ -151,7 +151,7 @@ h1:after {
 			
 			</form>
 			
-			<form id="similarfile" class="form-style-7" enctype="multipart/form-data" action="/SimpleWebPage/updateSimilarImg"  method="post">
+			<form id="similarfile" class="form-style-7" enctype="multipart/form-data" action="/updateSimilarImg"  method="post">
 
 				<ul class="ul-subimage-similar">
 
@@ -159,7 +159,7 @@ h1:after {
 
 			</form>
 						
-			<form id="randomfile" class="form-style-7" action="/SimpleWebPage/updateRandomImg" enctype="multipart/form-data" method="post">
+			<form id="randomfile" class="form-style-7" action="/updateRandomImg" enctype="multipart/form-data" method="post">
 
 				<ul class="ul-subimage-random">
 
