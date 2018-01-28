@@ -79,6 +79,37 @@ public class ImageDao {
 		return param.update(sql, source);
 	}
 	
+	
+	public int deleteParentImage(AdminImage image) {
+		String sql = "Delete from image where image_id=:imageId";
+		MapSqlParameterSource source = new MapSqlParameterSource();
+		source.addValue("imageId", image.getImageid());
+		return param.update(sql, source);
+	}
+	
+	public int deleteSubImage(AdminImage image) {
+		String sql = "Delete from subimage where parent_id=:imageId";
+		MapSqlParameterSource source = new MapSqlParameterSource();
+		source.addValue("imageId", image.getImageid());
+		return param.update(sql, source);
+	}
+	
+	public int updateRandomImage(AdminImage image){
+		String sql="Update subimage set subimage_name=:subImageName where subimage_id=:subImageId";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("subImageName", image.getSubimagename());
+		source.addValue("subImageId", image.getSubimageid());
+		return param.update(sql, source);
+	}
+	
+	public int updateSimilarImage(AdminImage image){
+		String sql="Update subimage set subimage_name=:subImageName where subimage_id=:subImageId";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("subImageName", image.getSubimagename());
+		source.addValue("subImageId", image.getSubimageid());
+		return param.update(sql, source);
+	}
+	
 	public int saveSimilarSubImage(AdminImage image) {
 		String sql = "Insert into subimage(image_type,parent_id,subimage_name)values(:imageType,:parentId,:subimageName)";
 		MapSqlParameterSource source = new MapSqlParameterSource();
@@ -99,6 +130,41 @@ public class ImageDao {
 			}
 		});
 	}
+	public List<AdminImage> getImageListForAdmin() {
+		String sql="select a.image_id,a.image_name, b.subimage_name, b.image_type from image a left join subimage b on a.image_id=b.parent_id;";
+		return param.query(sql, new RowMapper<AdminImage>() {
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image = new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				return image;
+			}
+		});
+	}
+	
+	public List<AdminImage>getSubImagelst(AdminImage image){
+		String sql="select  a.image_id, b.subimage_id, b.subimage_name, b.image_type, a.image_name from image a , subimage b where a.image_id=b.parent_id and a.image_id=:imageId";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("imageId", image.getImageid());
+		return param.query(sql,source,new RowMapper<AdminImage>() {
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image = new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setSubimageid(rs.getInt("subimage_id"));
+				return image;
+			}
+		});
+		
+		
+	}
+	
 
 	public List<Image> getImageContentList(Page page) {
 		MapSqlParameterSource source = new MapSqlParameterSource();
@@ -139,5 +205,7 @@ public class ImageDao {
 		return param.update(sql, source);
 
 	}
+	
+	
 
 }
