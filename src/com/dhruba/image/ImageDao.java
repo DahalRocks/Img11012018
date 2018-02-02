@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.dhruba.page.Page;
+import com.dhruba.user.User;
 
 @Component
 @Scope("session")
@@ -42,16 +43,17 @@ public class ImageDao {
 	}
 
 	public int saveImageByAdmin(AdminImage image) {
-		String sql = "Insert into image (image_name, haveSubimage) values(:imageName,:haveSubimage)";
+		String sql = "Insert into image (image_name, haveSubimage, parentimage_description) values(:imageName,:haveSubimage,:parentimageDescription)";
 		MapSqlParameterSource source = new MapSqlParameterSource();
 		source.addValue("imageName", image.getImagename());
 		source.addValue("haveSubimage", image.isHaveSubimage());
+		source.addValue("parentimageDescription", image.getParentimagedescription());
 		return param.update(sql, source);
 
 	}
 
 	public AdminImage selectLastInsertImageId() {
-		String sql = "SELECT * FROM image WHERE image_id=(SELECT max(image_id) FROM image)";
+		String sql = "SELECT image_id,image_name FROM image WHERE image_id=(SELECT max(image_id) FROM image)";
 		List<AdminImage> lstAdminImage = param.query(sql, new RowMapper<AdminImage>() {
 			@Override
 			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -71,11 +73,12 @@ public class ImageDao {
 	}
 
 	public int saveRandomSubImage(AdminImage image) {
-		String sql = "Insert into subimage(image_type,parent_id,subimage_name)values(:imageType,:parentId,:subimageName)";
+		String sql = "Insert into subimage(image_type,parent_id,subimage_name,subimage_description)values(:imageType,:parentId,:subimageName,:subimageDescription)";
 		MapSqlParameterSource source = new MapSqlParameterSource();
 		source.addValue("imageType", image.getImagetype());
 		source.addValue("parentId", image.getParentid());
 		source.addValue("subimageName", image.getRandomimage());
+		source.addValue("subimageDescription", image.getRandomimagedescription());
 		return param.update(sql, source);
 	}
 	
@@ -111,11 +114,12 @@ public class ImageDao {
 	}
 	
 	public int saveSimilarSubImage(AdminImage image) {
-		String sql = "Insert into subimage(image_type,parent_id,subimage_name)values(:imageType,:parentId,:subimageName)";
+		String sql = "Insert into subimage(image_type,parent_id,subimage_name,subimage_description)values(:imageType,:parentId,:subimageName,:subimageDescription)";
 		MapSqlParameterSource source = new MapSqlParameterSource();
 		source.addValue("imageType", image.getImagetype());
 		source.addValue("parentId", image.getParentid());
 		source.addValue("subimageName", image.getSimilarimage());
+		source.addValue("subimageDescription", image.getSimilarimagedescription());
 		return param.update(sql, source);
 	}
 
@@ -206,6 +210,100 @@ public class ImageDao {
 
 	}
 	
-	
+	public List<AdminImage> getImageHavingNoSubImg(){
+		String sql="select * from image where haveSubimage='0' order by rand() limit 3";
+		return param.query(sql, new RowMapper<AdminImage>() {
 
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				return image;
+			}
+		});
+	}
+
+	public int saveImageDescription(AdminImage objImageDescription, User user) {
+		String sql="Insert into imagedescription(image_id,image_description,sub_image,user_id) values(:imageId,:imageDescription,:subImage,:userId)";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("imageId", objImageDescription.getImageid());
+		source.addValue("imageDescription", objImageDescription.getImagedescription());
+		source.addValue("subImage", objImageDescription.getImagetype());
+		source.addValue("userId", user.getUserid());
+		
+		return param.update(sql, source);
+	}
+
+	public List<AdminImage> getImageWithRandomSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='random' order by rand() limit 3";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setRandomimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
+
+	public List<AdminImage> getImageWithSimilarSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='similar' order by rand() limit 3";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setSimilarimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
+
+	public List<AdminImage> callImageDescriptionToEvaluate(User user) {
+		String sql="select a.imagedescription_id, a.image_description, b.parentimage_description from imagedescription a, image b where a.image_id=b.image_id and a.user_id <> :userId and a.isevaluated='0' order by rand() limit 9";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("userId", user.getUserid());
+		return param.query(sql, source, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImagedescriptionid(rs.getInt("imagedescription_id"));
+				image.setImagedescription(rs.getString("image_description"));
+				image.setParentimagedescription(rs.getString("parentimage_description"));
+				return image;
+			}
+		});
+	
+	}
+
+	public int saveEvaluation(AdminImage objEvaluation) {
+		String sql="Insert into evaluation(imagedescription_id,evaluation_string) values(:imageDescriptionId,:evaluationString)";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("imageDescriptionId", objEvaluation.getImagedescriptionid());
+		source.addValue("evaluationString", objEvaluation.getEvaluationstring());
+		return param.update(sql, source);
+		
+	}
+	
+	public int updateEvaluationStatus(AdminImage objEvaluation){
+		String sql="Update imagedescription set isevaluated=:isEvaluated where imagedescription_id=:imagedescriptionId";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("isEvaluated", true);
+		source.addValue("imagedescriptionId", objEvaluation.getImagedescriptionid());
+		return param.update(sql, source);
+	}
+	
+	
+	
 }
