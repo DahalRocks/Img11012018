@@ -84,7 +84,7 @@ public class LoginController {
 		        message+="\r\n";
 		        message+="\r\n Please go to the following link and use the username and password given below to get logged in.";
 		        message+="\r\n";
-		        message+="\r\n http://tomcat-datacollection.193b.starter-ca-central-1.openshiftapps.com";
+		        message+="\r\n http://localhost:8080/SimpleWebPage/createuserlogin";
 		        message+="\r\n";
 		        message+="USERNAME:"+user.getUsername();
 		        message+="\r\n";
@@ -93,7 +93,7 @@ public class LoginController {
 		        message+="\r\n";
 		        message+="When you get logged in, you will have a blog having 5 different contents.";
 		        message+="\r\n";
-		        message+="Each of the contents has an image upload button at the bottom. Click that button to get an image upload form.";
+		        message+="Each of the contents has a link saying: \"image upload link for this content \", at the bottom. Click this link to get an image upload form.";
 		        message+="\r\n";
 		        message+="Use this form and upload an image that you think is suitable for the contents.";
 		        message+="\r\n";
@@ -111,7 +111,7 @@ public class LoginController {
 		        email.setText(message);
 		         
 		        // sends the e-mail
-		        mailSender.send(email);
+		        //mailSender.send(email);
 			}
 			return "redirect:createuser";
 		}
@@ -161,9 +161,12 @@ public class LoginController {
 				user = userService.getUserDetailByName(user);
 				session.setAttribute("user", user);
 				//reminder = reminderService.getReminder();
+				
 				reminder.setCheck(user.getReminded());
+				
 				session.setAttribute("reminder", reminder);
-				return "redirect:callcontentfirsttime";
+				//return "redirect:callcontentfirsttime";
+				return "redirect:experimentpage";
 			} else {
 				msg = "User Name or Password is Incorrect!!";
 			}
