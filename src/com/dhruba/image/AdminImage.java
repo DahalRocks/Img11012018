@@ -21,10 +21,60 @@ public class AdminImage {
 	private String imagetype;
 	private String subimagename;
 	private int subimageid;
+	private String imagedescription;
+	private String randomimagedescription;
+	private String similarimagedescription;
+	@NotEmpty(message="Parent image description can not be empty")
+	private String parentimagedescription;
+	private String evaluationstring;
+	private int imagedescriptionid;
+	private boolean isEvaluated;
 	
 	
 	
 	
+	public boolean isEvaluated() {
+		return isEvaluated;
+	}
+	public void setEvaluated(boolean isEvaluated) {
+		this.isEvaluated = isEvaluated;
+	}
+	public String getEvaluationstring() {
+		return evaluationstring;
+	}
+	public void setEvaluationstring(String evaluationstring) {
+		this.evaluationstring = evaluationstring;
+	}
+	public int getImagedescriptionid() {
+		return imagedescriptionid;
+	}
+	public void setImagedescriptionid(int imagedescriptionid) {
+		this.imagedescriptionid = imagedescriptionid;
+	}
+	public String getParentimagedescription() {
+		return parentimagedescription;
+	}
+	public void setParentimagedescription(String parentimagedescription) {
+		this.parentimagedescription = parentimagedescription;
+	}
+	public String getRandomimagedescription() {
+		return randomimagedescription;
+	}
+	public void setRandomimagedescription(String randomimagedescription) {
+		this.randomimagedescription = randomimagedescription;
+	}
+	public String getSimilarimagedescription() {
+		return similarimagedescription;
+	}
+	public void setSimilarimagedescription(String similarimagedescription) {
+		this.similarimagedescription = similarimagedescription;
+	}
+	public String getImagedescription() {
+		return imagedescription;
+	}
+	public void setImagedescription(String imagedescription) {
+		this.imagedescription = imagedescription;
+	}
 	public int getSubimageid() {
 		return subimageid;
 	}
