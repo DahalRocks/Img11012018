@@ -176,6 +176,8 @@ public class ImageController {
 			@RequestParam CommonsMultipartFile similarimagefile, Model model) throws IOException {
 		if (result.hasErrors() || file.isEmpty()) {
 			model.addAttribute("imagebyadmin", image);
+			List<AdminImage> parentimagelst = imageService.getImageList();
+			model.addAttribute("parentimagelst", parentimagelst);
 			modelMap.put(BindingResult.class.getName() + ".imagebyadmin", result);
 			return "form_uploadimagebyadmin";
 		}
@@ -203,36 +205,45 @@ public class ImageController {
 			File similarFile = new File(similarFileName);
 
 			if (image.isHaveSubimage()) {
-				if (!newFile.exists() && !randomFile.exists() && !similarFile.exists()) {
+				if (!newFile.exists() || !randomFile.exists() || !similarFile.exists()) {
 
-					newFile.createNewFile();
-					randomFile.createNewFile();
-					similarFile.createNewFile();
+					if (!newFile.exists()) {
+						newFile.createNewFile();
+						BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
+						try {
+							byte[] bytes = file.getBytes();
+							fileWriter.write(bytes);
+						} catch (Exception e) {
+							// TODO: handle exception
+						} finally {
+							fileWriter.close();
 
-					BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
-					BufferedOutputStream fileWriterforRandomFile = new BufferedOutputStream(
-							new FileOutputStream(randomFile));
-					BufferedOutputStream fileWriterforSimilarFile = new BufferedOutputStream(
-							new FileOutputStream(similarFile));
+						}
 
-					try {
-						byte[] bytes = file.getBytes();
-						byte[] bytesForRandomImage = randomimagefile.getBytes();
-						byte[] bytesForSimilarImage = similarimagefile.getBytes();
-
-						// write bytes to the new files
-						fileWriter.write(bytes);
-						fileWriterforRandomFile.write(bytesForRandomImage);
-						fileWriterforSimilarFile.write(bytesForSimilarImage);
-
-					} catch (Exception e) {
-
-					} finally {
-						fileWriter.close();
-						fileWriterforRandomFile.close();
-						fileWriterforSimilarFile.close();
+					} else if (!randomFile.exists()) {
+						randomFile.createNewFile();
+						BufferedOutputStream fileWriterforRandomFile = new BufferedOutputStream(
+								new FileOutputStream(randomFile));
+						try {
+							byte[] bytesForRandomImage = randomimagefile.getBytes();
+							fileWriterforRandomFile.write(bytesForRandomImage);
+						} catch (Exception e) {
+							// TODO: handle exception
+						} finally {
+							fileWriterforRandomFile.close();
+						}
+					} else {
+						similarFile.createNewFile();
+						BufferedOutputStream fileWriterforSimilarFile = new BufferedOutputStream(
+								new FileOutputStream(similarFile));
+						try {
+							byte[] bytesForSimilarImage = similarimagefile.getBytes();
+							fileWriterforSimilarFile.write(bytesForSimilarImage);
+						} catch (Exception e) {
+						} finally {
+							fileWriterforSimilarFile.close();
+						}
 					}
-
 				}
 
 				image.setImagename(img1withoutspace);
@@ -245,21 +256,22 @@ public class ImageController {
 			}
 
 			else {
-				newFile.createNewFile();
-				BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
-				try {
-					byte[] bytes = file.getBytes();
-					// write bytes to the new files
-					fileWriter.write(bytes);
-					image.setImagename(img1withoutspace);
+				if (!newFile.exists()) {
+					System.out.println("newfile:" + newFile);
+					newFile.createNewFile();
+					BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
+					try {
+						byte[] bytes = file.getBytes();
+						fileWriter.write(bytes);
 
-					imageService.createImageByAdmin(image);
+					} catch (Exception e) {
 
-				} catch (Exception e) {
-
-				} finally {
-					fileWriter.close();
+					} finally {
+						fileWriter.close();
+					}
 				}
+				image.setImagename(img1withoutspace);
+				imageService.createImageByAdmin(image);
 			}
 
 		}
@@ -387,6 +399,65 @@ public class ImageController {
 
 		return "Update successful";
 
+	}
+
+	@RequestMapping(value = "/getImageHavingRandomSubImg", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object getImageHavingRandomSubImg()
+			throws JsonGenerationException, JsonMappingException, IOException {
+		List<AdminImage> lstImage = imageService.getImageWithRandomSubImg();
+		String strImg = new String();
+		ObjectMapper mapper = new ObjectMapper();
+		strImg = mapper.writeValueAsString(lstImage);
+		return strImg;
+	}
+
+	@RequestMapping(value = "/getImageHavingSimilarSubImg", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object getImageHavingSimilarSubImg()
+			throws JsonGenerationException, JsonMappingException, IOException {
+		List<AdminImage> lstImage = imageService.getImageWithSimilarSubImg();
+		String strImg = new String();
+		ObjectMapper mapper = new ObjectMapper();
+		strImg = mapper.writeValueAsString(lstImage);
+		return strImg;
+	}
+
+	@RequestMapping(value = "/getImageHavingNoSubImg", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object getImageHavingNoSubImg()
+			throws JsonGenerationException, JsonMappingException, IOException {
+		List<AdminImage> lstImage = imageService.getImageHavingNoSubImg();
+		String strImg = new String();
+		ObjectMapper mapper = new ObjectMapper();
+		strImg = mapper.writeValueAsString(lstImage);
+		return strImg;
+	}
+
+	@RequestMapping(value = "/saveImageDescription", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object saveImageDescription(@RequestBody String strData,HttpSession session)
+			throws JsonParseException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		AdminImage objImageDescription = mapper.readValue(strData, AdminImage.class);
+		imageService.saveImageDescription(objImageDescription,session);
+
+		String result = new String("true");
+		return result;
+	}
+	@RequestMapping(value="/saveEvaluation", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object saveEvaluation(@RequestBody String strEvaluation) throws JsonParseException, JsonMappingException, IOException{
+		ObjectMapper objMapper=new ObjectMapper();
+		AdminImage objEvaluation=objMapper.readValue(strEvaluation,AdminImage.class);
+		imageService.saveEvaluation(objEvaluation);
+		String result=new String("true");
+		return result;
+	}
+	
+	@RequestMapping(value="/callImageDescriptionToEvaluate", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object callImageDescriptionToEvaluate(HttpSession session) throws JsonParseException, JsonMappingException, IOException{
+		User user=(User)session.getAttribute("user");
+		List<AdminImage>lstEvaluation=imageService.callImageDescriptionToEvaluate(user);
+		String result=new String();
+		ObjectMapper objMapper=new ObjectMapper();
+		result=objMapper.writeValueAsString(lstEvaluation);
+		return result;
 	}
 
 }
