@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +29,8 @@ import com.dhruba.reminder.Reminder;
 import com.dhruba.text.TextContent;
 import com.dhruba.text.TextContentService;
 import com.dhruba.user.User;
+import com.dhruba.user.UserDetail;
+import com.dhruba.user.UserService;
 
 @Controller
 @Component
@@ -46,8 +51,51 @@ public class MyController {
 	TextContentService textService;
 	@Autowired
 	private Reminder reminder;
+	@Autowired
+	private UserDetail userDetail;
+	@Autowired
+	private UserService userService;
+
+	@RequestMapping("/getuserdetailform")
+	public String getUserDetail(Model model) {
+		model.addAttribute("userDetail", new UserDetail());
+		return "form_userdetail";
+	}
 	
+	@RequestMapping("/thankyoupage")
+	public String getThankyouPage(){
+		return "thankyou";
+	}
+
+	@RequestMapping("/enteruser")
+	public String enterUserDetail(Model model, @Valid UserDetail userDetail, BindingResult result, ModelMap modelMap,
+			HttpSession session) {
+
+		if (result.hasErrors()) {
+			model.addAttribute("userDetail", userDetail);
+			modelMap.put(BindingResult.class.getName() + ".userDetail", result);
+			return "form_userdetail";
+		} else {
+			if (!userService.checkIfUserExist(userDetail)) {
+				int saveresult = userService.enterUserDetail(userDetail);
+				if (saveresult > 0)
+					userDetail = userService.getUserDetailId(userDetail);
+				session.setAttribute("userDetail", userDetail);
+
+			} else {
+				model.addAttribute("message", "This email address has already been registered.");
+				return "form_userdetail";
+			}
+
+		}
+		return "redirect:callcontent";
+	}
 	
+	@RequestMapping("/experimentpage")
+	public String getExperimentpage(Model model){
+		model.addAttribute("experiment", new Image());
+		return "experimentpage";
+	}
 
 	@RequestMapping("/")
 	public String getUserLogin(Model model) {
@@ -59,7 +107,7 @@ public class MyController {
 	public String getAdminPage() {
 		return "adminpage";
 	}
-	
+
 	@RequestMapping("/uploadimage")
 	public String getUploadImage() {
 		return "uploadimage";
@@ -74,58 +122,57 @@ public class MyController {
 	public String getLoginPage() {
 		return "login";
 	}
-	
+
 	@RequestMapping(value = "/callcontentfirsttime")
-	public String callContentPageFirstTime(Model model, HttpSession session){
-		//get user name and save it as page name in db
-				user=(User)session.getAttribute("user");
-				reminder=(Reminder)session.getAttribute("reminder");
-				page.setReminder(reminder);
-				page.setUser(user);
-				page.setPagename(user.getUsername());
-				if (service.createPage(page)){
-					page=service.getPageDetailByName(page);
-					
-					session.setAttribute("page", page);
-				}else{
-					page=service.getPageDetailByName(page);
-					
-					session.setAttribute("page", page);
-				}
-				return "redirect:/callcontent";
+	public String callContentPageFirstTime(Model model, HttpSession session) {
+		// get user name and save it as page name in db
+		user = (User) session.getAttribute("user");
+		reminder = (Reminder) session.getAttribute("reminder");
+		page.setReminder(reminder);
+		page.setUser(user);
+		page.setPagename(user.getUsername());
+		if (service.createPage(page)) {
+			page = service.getPageDetailByName(page);
+
+			session.setAttribute("page", page);
+		} else {
+			page = service.getPageDetailByName(page);
+
+			session.setAttribute("page", page);
 		}
+		return "redirect:callcontent";
+	}
 
 	@RequestMapping(value = "/callcontent")
 	public String callContentPage(Model model, HttpSession session) {
 
 		Page page = (Page) session.getAttribute("page");
 		java.util.List<Image> lstImageContent = imageService.getImageContentList(page);
-		User user = (User)session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		List<TextContent> lstTextContent = textService.getTextContentList(user);
 		model.addAttribute("textlst", lstTextContent);
 		model.addAttribute("imagelst", lstImageContent);
 		model.addAttribute("contentCount", lstTextContent.size());
 		return "content";
-		
+
 	}
-	
-	@RequestMapping(value ="/checkreminder", method = {RequestMethod.GET, RequestMethod.POST},headers = "Accept=*/*", produces = "application/json")
+
+	@RequestMapping(value = "/checkreminder", method = { RequestMethod.GET,
+			RequestMethod.POST }, headers = "Accept=*/*", produces = "application/json")
 	public @ResponseBody Object getReminder(HttpSession session)
 			throws JsonGenerationException, JsonMappingException, IOException {
-		Reminder reminder=(Reminder)session.getAttribute("reminder");
+		Reminder reminder = (Reminder) session.getAttribute("reminder");
 		ObjectMapper objMap = new ObjectMapper();
 		String str = new String();
 		str = objMap.writeValueAsString(reminder);
 		return str;
 	}
-	
+
 	@RequestMapping(value = "/callgallery")
 	public String callImageGallery(Model model) {
-		List<AdminImage>imagelst=imageService.getImageList();
+		List<AdminImage> imagelst = imageService.getImageList();
 		model.addAttribute("imagelst", imagelst);
 		return "imagegallery";
 	}
-
-	
 
 }
