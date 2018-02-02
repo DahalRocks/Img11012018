@@ -2,11 +2,15 @@ package com.dhruba.image;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import com.dhruba.page.Page;
+import com.dhruba.user.User;
 
 @Component
 @Scope("session")
@@ -157,5 +161,70 @@ public class ImageService {
 		}
 		return isUpdated;
 	}
+	
+	public List<AdminImage>getImageHavingNoSubImg(){
+		List<AdminImage> lstImage = new ArrayList<AdminImage>();
+		try {
+			lstImage=imageDao.getImageHavingNoSubImg();
+		} catch (DataAccessException e) {
+			
+		}
+		return lstImage;
+	}
+
+	public void saveImageDescription(AdminImage objImageDescription, HttpSession session) {
+		
+		try {
+			User user=(User)session.getAttribute("user");
+			imageDao.saveImageDescription(objImageDescription,user);
+		} catch (DataAccessException e) {
+			
+		}
+	}
+
+	public List<AdminImage> getImageWithRandomSubImg() {
+		List<AdminImage> lstImage = new ArrayList<AdminImage>();
+		try {
+			lstImage=imageDao.getImageWithRandomSubImg();
+		} catch (DataAccessException e) {
+			
+		}
+		return lstImage;
+	}
+
+	public List<AdminImage> getImageWithSimilarSubImg() {
+		List<AdminImage> lstImage = new ArrayList<AdminImage>();
+		try {
+			lstImage=imageDao.getImageWithSimilarSubImg();
+		} catch (DataAccessException e) {
+			
+		}
+		return lstImage;
+	}
+
+	public List<AdminImage> callImageDescriptionToEvaluate(User user) {
+		List<AdminImage> lstEvaluation = new ArrayList<AdminImage>();
+		try {
+			lstEvaluation=imageDao.callImageDescriptionToEvaluate(user);
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+		}
+		return lstEvaluation;
+	}
+
+	public boolean saveEvaluation(AdminImage objEvaluation) {
+		boolean isSaved = true;
+		try {
+			imageDao.saveEvaluation(objEvaluation);
+			imageDao.updateEvaluationStatus(objEvaluation);
+		} catch (DataAccessException e) {
+			isSaved = false;
+			
+		}
+		return isSaved;
+		
+	}
+
+	
 
 }
