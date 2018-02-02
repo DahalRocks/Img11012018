@@ -13,7 +13,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
 </head>
 <body>
-	<sf:form action="/SimpleWebPage/enteruser" method="post"
+	<sf:form action="/enteruser" method="post"
 		commandName="userDetail" class="form-style-7">
 		<ul>
 		
