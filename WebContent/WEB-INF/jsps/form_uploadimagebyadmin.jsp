@@ -102,6 +102,11 @@ h1:after {
 				<li><label for="title">Upload Image</label> <sf:input
 						type="file" path="file" name="file" /> <br /> <sf:errors
 						path="file" style="color:red;"></sf:errors></li>
+				<li><label for="parentimagedescription">Description
+						for parent image</label> <sf:input id="parentimagedescription"
+						type="text" path="parentimagedescription" /> <sf:errors
+						path="parentimagedescription" style="color:red"></sf:errors></li>
+
 				<li><label for="rdbYes">Have sub image:Yes</label> <input
 					type="radio" id="rdbYes" name="haveSubimage" value="true" /> <br />
 					<sf:errors path="haveSubimage" style="color:red;"></sf:errors> <span>Make
@@ -115,12 +120,20 @@ h1:after {
 						Image</label> <sf:input id="imgRandom" path="randomimagefile" type="file"
 						name="randomimagefile" /> <sf:errors path="randomimage"
 						style="color:red;"></sf:errors><span>Upload random image</span></li>
+				<li class="movable hide"><label for="randomimagedescription">Description
+						for random image</label> <sf:input id="randomimagedescription" type="text"
+						path="randomimagedescription" /> <sf:errors
+						path="randomimagedescription" style="color:red"></sf:errors></li>
 
 				<li class="movable similar hide"><label for="imgSimilar">Similar
 						Image</label> <sf:input id="imgSimilar" path="similarimagefile"
 						type="file" name="similarimagefile" /> <sf:errors
 						path="similarimage" style="color:red;"></sf:errors><span>Upload
 						similar image</span></li>
+				<li class="movable hide"><label for="similarimagedescription">Description
+						for similar image</label> <sf:input id="similarimagedescription"
+						type="text" path="similarimagedescription" /> <sf:errors
+						path="similarimagedescription" style="color:red"></sf:errors></li>
 				<li><input type="submit" value="Upload" /> or <a class="close"
 					href="${pageContext.request.contextPath}/adminpage">Cancel</a></li>
 			</ul>
@@ -143,23 +156,27 @@ h1:after {
 	<div id="imagelistDialog" title="Sub Images">
 		<div class="divForm hide">
 			<form id="deletefile" class="form-style-7" action="">
-				<ul class="ul-delete-image"><li>
-					<input type="button" value="Delete Parent Image" id="btnDelete"/>
-				 </li>
-				 <li class="child-li hide"></li>
-				 </ul>
-			
+				<ul class="ul-delete-image">
+					<li><input type="button" value="Delete Parent Image"
+						id="btnDelete" /></li>
+					<li class="child-li hide"></li>
+				</ul>
+
 			</form>
-			
-			<form id="similarfile" class="form-style-7" enctype="multipart/form-data" action="/updateSimilarImg"  method="post">
+
+			<form id="similarfile" class="form-style-7"
+				enctype="multipart/form-data"
+				action="/updateSimilarImg" method="post">
 
 				<ul class="ul-subimage-similar">
 
 				</ul>
 
 			</form>
-						
-			<form id="randomfile" class="form-style-7" action="/updateRandomImg" enctype="multipart/form-data" method="post">
+
+			<form id="randomfile" class="form-style-7"
+				action="/updateRandomImg"
+				enctype="multipart/form-data" method="post">
 
 				<ul class="ul-subimage-random">
 
@@ -194,222 +211,211 @@ h1:after {
 		function createSubImageWindow(result) {
 			$('.ul-subimage-similar').empty();
 			$('.ul-subimage-random').empty();
-			
+
 			if (result.length == '0') {
 				var htmlforimg = '<li><h1>No sub image found</h1></li>';
 				$('.ul-subimage').append(htmlforimg);
 			} else {
-				$.each(result,function(index, currImg) {
+				$
+						.each(
+								result,
+								function(index, currImg) {
 									if (currImg.imagetype == "similar") {
 										var htmlforimg = '<li><label for="similarimg">Similar Image</label><img style="width:200px;height:200px" alt="Similar image to the parent image" src=${pageContext.request.contextPath}/resources/galleryimage/'+currImg.subimagename+'/>';
 										htmlforimg += '<input type="file" name="similarfile" value="Upload" id="similarimg"/><label class="subimgid hide">'
 												+ currImg.subimageid
 												+ '</label><input id="btnUpdateSimilarImg" type="submit" value="Update" /></li>';
-										$('.ul-subimage-similar').append(htmlforimg);
+										$('.ul-subimage-similar').append(
+												htmlforimg);
 
 									} else if (currImg.imagetype == "random") {
 										var htmlforimg = '<li><label for="randomimage">Random Image</label><img style="width:200px;height:200px" alt="Random image to the parent image" src=${pageContext.request.contextPath}/resources/galleryimage/'+currImg.subimagename+'/>';
 										htmlforimg += '<input type="file" name="randomfile" value="Upload" id="randomimage"/><label class="subimgid hide">'
 												+ currImg.subimageid
 												+ '</label><input id="btnUpdateRandomImg" type="submit" value="Update" /> </li>';
-										$('.ul-subimage-random').append(htmlforimg);
+										$('.ul-subimage-random').append(
+												htmlforimg);
 									}
 
 								});
 
 			}
 		}
-		function setRandomId(subimageid)
-		{
-			
-			
-			
-			var imageid={
-					"subimageid":subimageid
-				};
-			
-				
-				var strData=JSON.stringify(imageid);
-				
-				$.ajax({
-				    url: '${pageContext.request.contextPath}/setRandomId',
-				    data: strData,
-				    dataType: 'json',
-				    processData: false,
-				    contentType: false,
-				    type: 'POST',
-				    success: function(data){
-				         updateRandomImg();
-				      
-				    },
-				    error:function(){
-				    	alert("Error occured in setting random image id");
-				    }
-				  });
-			
-			
-			
-			
-			
-		}
-		
-		function setSimilarId(subimageid)
-		{
-			
-			
-			
-			var imageid={
-					"subimageid":subimageid
-				};
-			
-				
-				var strData=JSON.stringify(imageid);
-				
-				$.ajax({
-				    url: '${pageContext.request.contextPath}/setSimilarId',
-				    data: strData,
-				    dataType: 'json',
-				    processData: false,
-				    contentType: false,
-				    type: 'POST',
-				    success: function(data){
-				         updateRandomImg();
-				      
-				    },
-				    error:function(){
-				    	alert("Error occured in setting random image id");
-				    }
-				  });
-			
-			
-			
-			
-			
-		}
-			
-	
-		
-		function updateRandomImg(){
-			var oMyForm = new FormData();
-			oMyForm.append("file", randomfile.files[0]);		
+		function setRandomId(subimageid) {
 
-		$.ajax({
-		            url: '${pageContext.request.contextPath}/updateRandomImg',
-		            type: "POST",
-		            data: oMyForm,
-		            enctype: 'multipart/form-data',
-		            processData: false,
-		            contentType: false
-		          }).done(function(data) {
-		        	  alert('successful');
-		    		              
-		          }).fail(function(jqXHR, textStatus) {
-		             
-		              alert('File upload failed ...');
-		          });
-			
-			}
-		
-		
-		
-		
-		
-function updateSimilarImg(){
-			
-			var oMyForm = new FormData();
-			oMyForm.append("file", similarfile.files[0]);
-			
-			  
-			  $.ajax({
-		            url: '${pageContext.request.contextPath}/updateSimilarImg',
-		            type: "POST",
-		            data: oMyForm,
-		            enctype: 'multipart/form-data',
-		            processData: false,
-		            contentType: false
-		          }).done(function(data) {
-		        	  alert('Upload success!!');
-		    		              
-		          }).fail(function(jqXHR, textStatus) {
-		             
-		              alert('File upload failed ...');
-		          });
-			
-		}
-		function deleteParentImage(imageid){
-			
-			var imageid={
-					"imageid":imageid
-				};
-			
-				
-				var strData=JSON.stringify(imageid);
-				
-				$.ajax({
-				    url: '${pageContext.request.contextPath}/deleteParentImage',
-				    data: strData,
-				    dataType: 'json',
-				    processData: false,
-				    contentType: false,
-				    type: 'POST',
-				    success: function(data){
-				         alert("Delete successful!!");
-				         window.location
-							.replace('${pageContext.request.contextPath}/calladminform');
-				      
-				    },
-				    error:function(){
-				    	alert("Error occured in deliting parent image");
-				    }
-				  });
-		}
-		
-		
+			var imageid = {
+				"subimageid" : subimageid
+			};
 
-		$(document).ready(function() {
-			$('input:radio').click(function() {
-				if ($(this).val() === 'true') {
-					$('.nomovable').remove();
-					$('.movable').removeClass('hide');
+			var strData = JSON.stringify(imageid);
+
+			$.ajax({
+				url : '${pageContext.request.contextPath}/setRandomId',
+				data : strData,
+				dataType : 'json',
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					updateRandomImg();
+
+				},
+				error : function() {
+					alert("Error occured in setting random image id");
 				}
 			});
-			$('#btnDelete').click(function(){
-				
-				
-				deleteParentImage($(this).closest('ul').find('.imageid').text());
-				
+
+		}
+
+		function setSimilarId(subimageid) {
+
+			var imageid = {
+				"subimageid" : subimageid
+			};
+
+			var strData = JSON.stringify(imageid);
+
+			$.ajax({
+				url : '${pageContext.request.contextPath}/setSimilarId',
+				data : strData,
+				dataType : 'json',
+				processData : false,
+				contentType : false,
+				type : 'POST',
+				success : function(data) {
+					updateRandomImg();
+
+				},
+				error : function() {
+					alert("Error occured in setting random image id");
+				}
 			});
 
-			$('.singleimg').click(function(event) {
-				var imageid = $(this).closest('li').find('.imageid').text();
-				
-				var htmlforid='<lable class="imageid">'+imageid+'</label>';
-			
-				$('.child-li').empty();
-				$('.child-li').append(htmlforid);
-				
-				event.stopPropagation();
-				getSubImage(imageid);
-				$(".divForm").removeClass("hide");
-				$("#imagelistDialog").dialog({
-					width : 700
+		}
+
+		function updateRandomImg() {
+			var oMyForm = new FormData();
+			oMyForm.append("file", randomfile.files[0]);
+
+			$.ajax({
+				url : '${pageContext.request.contextPath}/updateRandomImg',
+				type : "POST",
+				data : oMyForm,
+				enctype : 'multipart/form-data',
+				processData : false,
+				contentType : false
+			}).done(function(data) {
+				alert('successful');
+
+			}).fail(function(jqXHR, textStatus) {
+
+				alert('File upload failed ...');
+			});
+
+		}
+
+		function updateSimilarImg() {
+
+			var oMyForm = new FormData();
+			oMyForm.append("file", similarfile.files[0]);
+
+			$.ajax({
+				url : '${pageContext.request.contextPath}/updateSimilarImg',
+				type : "POST",
+				data : oMyForm,
+				enctype : 'multipart/form-data',
+				processData : false,
+				contentType : false
+			}).done(function(data) {
+				alert('Upload success!!');
+
+			}).fail(function(jqXHR, textStatus) {
+
+				alert('File upload failed ...');
+			});
+
+		}
+		function deleteParentImage(imageid) {
+
+			var imageid = {
+				"imageid" : imageid
+			};
+
+			var strData = JSON.stringify(imageid);
+
+			$
+					.ajax({
+						url : '${pageContext.request.contextPath}/deleteParentImage',
+						data : strData,
+						dataType : 'json',
+						processData : false,
+						contentType : false,
+						type : 'POST',
+						success : function(data) {
+							alert("Delete successful!!");
+							window.location
+									.replace('${pageContext.request.contextPath}/calladminform');
+
+						},
+						error : function() {
+							alert("Error occured in deliting parent image");
+						}
+					});
+		}
+
+		$(document).ready(
+				function() {
+					$('input:radio').click(function() {
+						if ($(this).val() === 'true') {
+							$('.nomovable').remove();
+							$('.movable').removeClass('hide');
+						}
+					});
+					$('#btnDelete').click(
+							function() {
+
+								deleteParentImage($(this).closest('ul').find(
+										'.imageid').text());
+
+							});
+
+					$('.singleimg').click(
+							function(event) {
+								var imageid = $(this).closest('li').find(
+										'.imageid').text();
+
+								var htmlforid = '<lable class="imageid">'
+										+ imageid + '</label>';
+
+								$('.child-li').empty();
+								$('.child-li').append(htmlforid);
+
+								event.stopPropagation();
+								getSubImage(imageid);
+								$(".divForm").removeClass("hide");
+								$("#imagelistDialog").dialog({
+									width : 700
+								});
+							});
+
+					$('body').on(
+							'click',
+							'#btnUpdateRandomImg',
+							function() {
+								setRandomId($(this).closest('li').find(
+										'.subimgid').text());
+
+							});
+
+					$('body').on(
+							'click',
+							'#btnUpdateSimilarImg',
+							function() {
+								setSimilarId($(this).closest('li').find(
+										'.subimgid').text());
+							});
+
 				});
-			});
-
-			$('body').on('click', '#btnUpdateRandomImg', function () {
-			    setRandomId($(this).closest('li').find('.subimgid').text());
-				
-			 });
-			
-			$('body').on('click', '#btnUpdateSimilarImg', function () {
-				setSimilarId($(this).closest('li').find('.subimgid').text());
-			 });
-			
-			
-			
-			
-
-		});
 	</script>
 </body>
 </html>
