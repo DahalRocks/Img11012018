@@ -29,10 +29,15 @@ public class AdminImage {
 	private String evaluationstring;
 	private int imagedescriptionid;
 	private boolean isEvaluated;
+	@NotEmpty(message="Parent image description can not be empty")
+	private String parentimagetype;
 	
-	
-	
-	
+	public String getParentimagetype() {
+		return parentimagetype;
+	}
+	public void setParentimagetype(String parentimagetype) {
+		this.parentimagetype = parentimagetype;
+	}
 	public boolean isEvaluated() {
 		return isEvaluated;
 	}
