@@ -43,11 +43,12 @@ public class ImageDao {
 	}
 
 	public int saveImageByAdmin(AdminImage image) {
-		String sql = "Insert into image (image_name, haveSubimage, parentimage_description) values(:imageName,:haveSubimage,:parentimageDescription)";
+		String sql = "Insert into image (image_name, haveSubimage, parentimage_description, image_type) values(:imageName,:haveSubimage,:parentimageDescription,:imageType)";
 		MapSqlParameterSource source = new MapSqlParameterSource();
 		source.addValue("imageName", image.getImagename());
 		source.addValue("haveSubimage", image.isHaveSubimage());
 		source.addValue("parentimageDescription", image.getParentimagedescription());
+		source.addValue("imageType", image.getParentimagetype());
 		return param.update(sql, source);
 
 	}
@@ -195,6 +196,50 @@ public class ImageDao {
 		String sql = "select count(*) from imagecontent where page_id=:pageid and division=:division";
 		return param.queryForObject(sql, source, Integer.class);
 	}
+	
+	public List<AdminImage> getGraphImageHavingNoSubImg(){
+		String sql="select * from image where haveSubimage='0' and image_type='graph' order by rand() limit 1";
+				
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				return image;
+			}
+		});
+	}
+	
+	public List<AdminImage> getMapImageHavingNoSubImg(){
+		String sql="select * from image where haveSubimage='0' and image_type='map' order by rand() limit 1";
+		
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				return image;
+			}
+		});
+	}
+	public List<AdminImage>  getOtherImageHavingNoSubImg(){
+		String sql="select * from image where haveSubimage='0' and image_type='other' order by rand() limit 1";
+		
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				return image;
+			}
+		});
+	}
 
 	public int updateImage(Image image) {
 		MapSqlParameterSource source = new MapSqlParameterSource();
@@ -251,9 +296,111 @@ public class ImageDao {
 			}
 		});
 	}
+	
+	public List<AdminImage> getGraphImageWithRandomSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='random' and a.image_type='graph' order by rand() limit 1";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setRandomimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
+	
+	public List<AdminImage> getMapImageWithRandomSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='random' and a.image_type='map' order by rand() limit 1";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setRandomimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
+	
+	public List<AdminImage> getOtherImageWithRandomSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='random' and a.image_type='other' order by rand() limit 1";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setRandomimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
 
 	public List<AdminImage> getImageWithSimilarSubImg() {
 		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='similar' order by rand() limit 3";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setSimilarimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
+	
+	public List<AdminImage> getGraphImageWithSimilarSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='similar' and a.image_type='graph' order by rand() limit 1";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setSimilarimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
+	
+	public List<AdminImage> getMapImageWithSimilarSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='similar' and a.image_type='map' order by rand() limit 1";
+		return param.query(sql, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setImageid(rs.getInt("image_id"));
+				image.setImagename(rs.getString("image_name"));
+				image.setSubimagename(rs.getString("subimage_name"));
+				image.setImagetype(rs.getString("image_type"));
+				image.setSimilarimagedescription(rs.getString("subimage_description"));
+				return image;
+			}
+		});
+	}
+	
+	public List<AdminImage> getOtherImageWithSimilarSubImg() {
+		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='similar' and a.image_type='other' order by rand() limit 1";
 		return param.query(sql, new RowMapper<AdminImage>() {
 
 			@Override
