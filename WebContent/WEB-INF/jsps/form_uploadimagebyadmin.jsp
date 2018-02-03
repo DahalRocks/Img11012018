@@ -106,7 +106,9 @@ h1:after {
 						for parent image</label> <sf:input id="parentimagedescription"
 						type="text" path="parentimagedescription" /> <sf:errors
 						path="parentimagedescription" style="color:red"></sf:errors></li>
-
+				<li><label for="parentimagetype">Parent Image Type</label> <sf:input id="parentimagetype"
+						type="text" path="parentimagetype" /> <sf:errors
+						path="parentimagetype" style="color:red"></sf:errors></li>
 				<li><label for="rdbYes">Have sub image:Yes</label> <input
 					type="radio" id="rdbYes" name="haveSubimage" value="true" /> <br />
 					<sf:errors path="haveSubimage" style="color:red;"></sf:errors> <span>Make
