@@ -1,6 +1,7 @@
 package com.dhruba.image;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -162,10 +163,35 @@ public class ImageService {
 		return isUpdated;
 	}
 	
-	public List<AdminImage>getImageHavingNoSubImg(){
+	/*public List<AdminImage>getImageHavingNoSubImg(){
 		List<AdminImage> lstImage = new ArrayList<AdminImage>();
 		try {
 			lstImage=imageDao.getImageHavingNoSubImg();
+		} catch (DataAccessException e) {
+			
+		}
+		return lstImage;
+	}*/
+	
+	public List<AdminImage>getImageHavingNoSubImg(){
+		List<AdminImage> lstImage = new ArrayList<AdminImage>();
+		try {
+			
+			
+			List<AdminImage> graphImage=imageDao.getGraphImageHavingNoSubImg();
+			for(AdminImage image:graphImage){
+				lstImage.add(image);
+			}
+			List<AdminImage> mapImage=imageDao.getMapImageHavingNoSubImg();
+			for(AdminImage image:mapImage){
+				lstImage.add(image);
+			}
+			List<AdminImage> otherImage=imageDao.getOtherImageHavingNoSubImg();
+			for(AdminImage image:otherImage){
+				lstImage.add(image);
+			}
+			
+			
 		} catch (DataAccessException e) {
 			
 		}
@@ -182,7 +208,7 @@ public class ImageService {
 		}
 	}
 
-	public List<AdminImage> getImageWithRandomSubImg() {
+	/*public List<AdminImage> getImageWithRandomSubImg() {
 		List<AdminImage> lstImage = new ArrayList<AdminImage>();
 		try {
 			lstImage=imageDao.getImageWithRandomSubImg();
@@ -190,12 +216,56 @@ public class ImageService {
 			
 		}
 		return lstImage;
+	}*/
+	
+	public List<AdminImage> getImageWithRandomSubImg() {
+		List<AdminImage> lstImage = new ArrayList<AdminImage>();
+		try {
+			List <AdminImage>graphImage=imageDao.getGraphImageWithRandomSubImg();
+						
+			for(AdminImage image:graphImage){
+				lstImage.add(image);
+			}
+			List <AdminImage>mapImage=imageDao.getMapImageWithRandomSubImg();
+			for(AdminImage image:mapImage){
+				lstImage.add(image);
+			}
+			List <AdminImage>otherImage=imageDao.getOtherImageWithRandomSubImg();
+			for(AdminImage image:otherImage){
+				lstImage.add(image);
+			}
+		} catch (DataAccessException e) {
+			
+		}
+		return lstImage;
 	}
 
-	public List<AdminImage> getImageWithSimilarSubImg() {
+	/*public List<AdminImage> getImageWithSimilarSubImg() {
 		List<AdminImage> lstImage = new ArrayList<AdminImage>();
 		try {
 			lstImage=imageDao.getImageWithSimilarSubImg();
+		} catch (DataAccessException e) {
+			
+		}
+		return lstImage;
+	}*/
+	public List<AdminImage> getImageWithSimilarSubImg() {
+		List<AdminImage> lstImage = new ArrayList<AdminImage>();
+		try {
+			
+			List <AdminImage>graphImage=imageDao.getGraphImageWithSimilarSubImg();
+			
+			for(AdminImage image:graphImage){
+				lstImage.add(image);
+			}
+			List <AdminImage>mapImage=imageDao.getMapImageWithSimilarSubImg();
+			for(AdminImage image:mapImage){
+				lstImage.add(image);
+			}
+			List <AdminImage>otherImage=imageDao.getOtherImageWithSimilarSubImg();
+			for(AdminImage image:otherImage){
+				lstImage.add(image);
+			}
 		} catch (DataAccessException e) {
 			
 		}
