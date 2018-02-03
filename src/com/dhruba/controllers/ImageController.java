@@ -205,46 +205,30 @@ public class ImageController {
 			File similarFile = new File(similarFileName);
 
 			if (image.isHaveSubimage()) {
-				if (!newFile.exists() || !randomFile.exists() || !similarFile.exists()) {
-
-					if (!newFile.exists()) {
+					
 						newFile.createNewFile();
 						BufferedOutputStream fileWriter = new BufferedOutputStream(new FileOutputStream(newFile));
-						try {
-							byte[] bytes = file.getBytes();
-							fileWriter.write(bytes);
-						} catch (Exception e) {
-							// TODO: handle exception
-						} finally {
-							fileWriter.close();
-
-						}
-
-					} else if (!randomFile.exists()) {
 						randomFile.createNewFile();
 						BufferedOutputStream fileWriterforRandomFile = new BufferedOutputStream(
 								new FileOutputStream(randomFile));
-						try {
-							byte[] bytesForRandomImage = randomimagefile.getBytes();
-							fileWriterforRandomFile.write(bytesForRandomImage);
-						} catch (Exception e) {
-							// TODO: handle exception
-						} finally {
-							fileWriterforRandomFile.close();
-						}
-					} else {
 						similarFile.createNewFile();
 						BufferedOutputStream fileWriterforSimilarFile = new BufferedOutputStream(
 								new FileOutputStream(similarFile));
 						try {
+							byte[] bytes = file.getBytes();
+							fileWriter.write(bytes);
+							byte[] bytesForRandomImage = randomimagefile.getBytes();
+							fileWriterforRandomFile.write(bytesForRandomImage);
 							byte[] bytesForSimilarImage = similarimagefile.getBytes();
 							fileWriterforSimilarFile.write(bytesForSimilarImage);
 						} catch (Exception e) {
+							// TODO: handle exception
 						} finally {
+							fileWriter.close();
+							fileWriterforRandomFile.close();
 							fileWriterforSimilarFile.close();
+
 						}
-					}
-				}
 
 				image.setImagename(img1withoutspace);
 				image.setRandomimage(img2withoutspace);
