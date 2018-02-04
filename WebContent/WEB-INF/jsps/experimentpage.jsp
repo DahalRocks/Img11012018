@@ -505,7 +505,12 @@ div.radio-div p {
 						contentType : false,
 						success : function(data) {
 							descriptionlst = data;
-							showDescription();
+							if(descriptionlst.length){
+								showDescription();	
+							}else{
+								var htmlnodescription="";
+								$('.round-image-number').after('<p>There is nothing yet to evaluate. Thank you!!</p>');
+							}
 						},
 						error : function() {
 							alert('error occured while geeting image description for evaluation!!');
