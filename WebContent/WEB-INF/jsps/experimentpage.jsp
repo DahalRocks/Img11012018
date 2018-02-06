@@ -7,15 +7,14 @@
 .hide {
 	visibility: hidden;
 }
-form.form-style-7{
+
+form.form-style-7 {
 	max-width: 1140px;
 }
 
 body {
 	font-family: Helvetica, Arial, Sans-Serif;
-}
-.divForm{
-background-color:#f0f5ff;
+	background-color:#f8f7fe;
 }
 
 h1 {
@@ -70,10 +69,6 @@ span {
 	border: 1px solid #fff;
 }
 
-.form-style-7 ul li {
-	/*text-align: center;*/
-}
-
 .form-style-7 ul li img {
 	border-radius: 30px;
 	padding-top: 10px;
@@ -81,7 +76,6 @@ span {
 
 .description-list {
 	color: blue;
-	/* text-align: center; */
 }
 
 div.user-image-description, div.parent-image-description {
@@ -101,14 +95,13 @@ div.radio-div {
 
 div.radio-div p {
 	float: left;
-	
 	margin: 15px 5px 0 5px;
 }
 
 .round-image-number {
 	width: 100%;
 	height: 33px;
-	background-color: #f1f3f1;
+	background-color: #fff;
 	text-align: center;
 	border-radius: 10px;
 	margin-top: 5px;
@@ -135,6 +128,37 @@ div.radio-div p {
 	float: left;
 	scale: 0.95;
 }
+
+.second-ul {
+	width: 100%;
+	display: block;
+}
+
+.second-ul li {
+	width: 35%;
+	float: left;
+	margin: 47px;
+	text-align: left;
+}
+
+.rating-div {
+	width: 100%;
+	display: block;
+	margin-top: 5px;
+}
+
+.rating-div div {
+	float: left;
+	margin: 5px 15px;
+	font-family: arial;
+	font-weight: bold;
+	line-height: 200%;
+	text-align: left;
+}
+
+input[type='button'] {
+	margin: 20px 15px;
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Experiment Page</title>
@@ -159,27 +183,70 @@ div.radio-div p {
 						<p class="second-round">Second Round</p>
 						<p class="third-round">Third Round</p>
 						<p class="evaluation-round">Evaluation</p>
-					</div>
-										
-					</li>
-				
-
-				<li class=" exampleli hide" style="width:500px;"><label >Example
+					</div></li>
+			</ul>
+			<ul class="second-ul">
+				<!-- <li class=" exampleli hide"><label>Example
 						Image to show how does an image description look like</label><img
 					style="width: 200px; height: 200px" id="exampleimage" alt="" src="">
-				<div class="img-desc-paragraph"></div></li>
-				<li style="width:500px;float:left"><label for="parentimg"
+					<div class="img-desc-paragraph"></div></li> -->
+				<li><label for="parentimg"
 					style="font-weight: bold; text-transform: uppercase">Write
 						a Description for this image</label><img
 					style="width: 250px; height: 250px" id="parentimg" alt=""
-					src="${pageContext.request.contextPath}/resources/galleryimage/bull.jpg"></li>
-				<li style="margin-left:30px;border: 2px solid black; border-radius: 30px;width:500px;float:left"><label
-					 for="txtImageDescription">Image
-						Description</label> <textarea id="txtImageDescription" rows="50" cols="50"
-						style="width: 100%; height: 100px"></textarea></li>
-				<li style="margin-left:30px;float:left"><input type="button" value="Ok" /><label
-					class="imageid hide"></label><label class="imagetype hide"></label></li>
+					src="${pageContext.request.contextPath}/resources/galleryimage/bull.jpg">
+
+					<textarea id="txtImageDescription" rows="50" cols="50"
+						style="width: 100%; height: 100px; border: 2px solid black; border-radius: 10px; margin-top: 10px"></textarea>
+
+					<div class="rating-div">
+						<div>
+							How difficult was it to write the description? <br> 1 for
+							not difficult at all and 4 for very difficult.
+						</div>
+						<div>1</div>
+						<div>
+							<input type="radio" value="1" name="difficultyrating" />
+						</div>
+						<div>2</div>
+						<div>
+							<input type="radio" value="2" name="difficultyrating" />
+						</div>
+						<div>3</div>
+						<div>
+							<input type="radio" value="3" name="difficultyrating" />
+						</div>
+						<div>4</div>
+						<div>
+							<input type="radio" value="4" name="difficultyrating" />
+						</div>
+
+					</div> <input type="button" value="Ok" /><label class="imageid hide"></label><label
+					class="imagetype hide"></label></li>
+
+
+				<li class=" exampleli hide"><label>Example Image
+						Description</label><img style="width: 200px; height: 200px"
+					id="exampleimage" alt="" src="">
+					<div class="img-desc-paragraph"></div></li>
+
+
+
+
+				<!-- <li
+				
+				
+					style="border: 2px solid black; border-radius: 30px"><label
+					for="txtImageDescription">Image Description</label> 
+						</li> -->
+
+
+
+
 			</ul>
+
+
+
 
 		</form>
 
@@ -433,9 +500,6 @@ div.radio-div p {
 								alert("Provide ratings before save!!");
 							}
 
-							//save evaluation
-							//if success
-							//increase counter value
 						});
 
 		function showDescription() {
@@ -454,6 +518,8 @@ div.radio-div p {
 						html += '<p>' + '"'
 								+ descriptionlst[i].imagedescription + '"'
 								+ '</p>';
+						html += '<img style="width:200px;height:200px" alt="" src="${pageContext.request.contextPath}/resources/galleryimage/'+descriptionlst[i].imagename+'"/>';
+						
 						html += '</div>';
 						html += '<div class="parent-image-description">';
 						$.each(arrParentDesc, function(i, val) {
@@ -482,9 +548,49 @@ div.radio-div p {
 						html += '<p class="hide imagedescriptionid">'
 								+ descriptionlst[i].imagedescriptionid + '</p>';
 						html += '</li>';
-						$("ul li:not(:first-child)").remove();
-						$("ul li:first").after(html);
+						/* $("ul li:not(:first-child)").remove();
+						$("ul li:first").after(html); */
+						$('ul.second-ul').html(html);
 
+					
+						/* <div class="rating-evaluation-div">
+						<div>
+							How difficult was it to write the description? <br> 1 for
+							not difficult at all and 4 for very difficult.
+						</div>
+						<div>1</div>
+						<div>
+							<input type="radio" value="1" name="difficultyrating" />
+						</div>
+						<div>2</div>
+						<div>
+							<input type="radio" value="2" name="difficultyrating" />
+						</div>
+						<div>3</div>
+						<div>
+							<input type="radio" value="3" name="difficultyrating" />
+						</div>
+						<div>4</div>
+						<div>
+							<input type="radio" value="4" name="difficultyrating" />
+						</div>
+
+					</div>
+						
+						var ratinghtml='<p>';
+						ratinghtml+=''
+						ratinghtml+='</p>';
+						var generalhtml='<li>';
+						
+						generalhtml+='<div>New concept that does not include by the image has been introduced in the description</div>';
+						
+						generalhtml +='</li>';
+					
+					var graphhtml="";
+					var maphtml=""; */
+					
+					
+					
 					}
 
 				}
@@ -531,124 +637,134 @@ div.radio-div p {
 						processData : false,
 						contentType : "application/json;charset=utf-8",
 						success : function(result) {
-							$('#txtImageDescription').val(' ');
-							count++;
-							if(count=="1"){
-								$('.first-number').removeClass('selected-number');
-								$('.first-number').addClass('done-number');
-								$('.second-number').addClass('selected-number');
-																				
-							}else if(count=="2"){
-								$('.second-number').removeClass('selected-number');
-								$('.second-number').addClass('done-number');
-								$('.third-number').addClass('selected-number');
+							if(result){
+								$('#txtImageDescription').val(' ');
+								count++;
+								if(count=="1"){
+									$('.first-number').removeClass('selected-number');
+									$('.first-number').addClass('done-number');
+									$('.second-number').addClass('selected-number');
+																					
+								}else if(count=="2"){
+									$('.second-number').removeClass('selected-number');
+									$('.second-number').addClass('done-number');
+									$('.third-number').addClass('selected-number');
+									
+								}
 								
-							}
-							
-							if (count >= "3") {
+								if (count >= "3") {
 
-								if (count == "3") {
-									$('.first-round').removeClass('selected-p');
-									$('.second-round').addClass('selected-p');
-									
-									var progresshtml="";
-									progresshtml+='<div class="round-image-number">';
-									progresshtml+='<p class="first-number selected-number">1</p>';
-									progresshtml+='<p class="second-number">2</p>';
-									progresshtml+='<p class="third-number ">3</p>';
-									progresshtml+='</div>';
-									
-									$('.round-header').next('div').remove();
-									$('.round-header').after(progresshtml);
-									
-									getImageHavingRandomSubImg();
-								} else {
-									countrandomsub++;
-									if(countrandomsub=="1"){
-										$('.first-number').removeClass('selected-number');
-										$('.first-number').addClass('done-number');
-										$('.second-number').addClass('selected-number');
-																						
-									}else if(countrandomsub=="2"){
-										$('.second-number').removeClass('selected-number');
-										$('.second-number').addClass('done-number');
-										$('.third-number').addClass('selected-number');
+									if (count == "3") {
+										$('.first-round').removeClass('selected-p');
+										$('.second-round').addClass('selected-p');
 										
-									}
-												
-									if (countrandomsub >= "3") {
-										if (countrandomsub == "3") {
-											$('.second-round').removeClass(
-													'selected-p');
-											$('.third-round').addClass(
-													'selected-p');
-											
-											var progresshtml="";
-											progresshtml+='<div class="round-image-number">';
-											progresshtml+='<p class="first-number selected-number">1</p>';
-											progresshtml+='<p class="second-number">2</p>';
-											progresshtml+='<p class="third-number ">3</p>';
-											progresshtml+='</div>';
-											$('.round-header').next('div').remove();
-											$('.round-header').after(progresshtml);
-														
-											getImageHavingSimilarSubImg();
-										} else {
-											countsimilarsub++;
-											
-											if(countsimilarsub=="1"){
-												$('.first-number').removeClass('selected-number');
-												$('.first-number').addClass('done-number');
-												$('.second-number').addClass('selected-number');
-																								
-											}else if(countsimilarsub=="2"){
-												$('.second-number').removeClass('selected-number');
-												$('.second-number').addClass('done-number');
-												$('.third-number').addClass('selected-number');
-												
-											}
-											
-											if (countsimilarsub >= "3") {
-												$('.third-round').removeClass(
-														'selected-p');
-												$('.evaluation-round')
-														.addClass('selected-p');
-
-												//evaluation round starts here//
-												$("ul li:not(:first-child)")
-														.remove();
-												var evaluationprogresshtml="";
-												evaluationprogresshtml+='<div class="hide round-image-number">';
-												evaluationprogresshtml+='<p class="first-number selected-number">1</p>';
-												evaluationprogresshtml+='<p class="second-number">2</p>';
-												evaluationprogresshtml+='<p class="third-number ">3</p>';
-												evaluationprogresshtml+='<p class="fourth-number">4</p>';
-												evaluationprogresshtml+='<p class="fifth-number">5</p>';
-												evaluationprogresshtml+='<p class="sixth-number">6</p>';
-												evaluationprogresshtml+='<p class="seventh-number">7</p>';
-												evaluationprogresshtml+='<p class="eighth-number">8</p>';
-												evaluationprogresshtml+='<p class="ninth-number">9</p>';
-												evaluationprogresshtml+='</div>';
-												$('.round-header').next('div').remove();
-												$('.round-header').after(evaluationprogresshtml);
-												callImageDescriptionToEvaluate();
-
-											} else {
-												showImageWithSimilarSubImg();
-											}
-
-										}
+										var progresshtml="";
+										progresshtml+='<div class="round-image-number">';
+										progresshtml+='<p class="first-number selected-number">1</p>';
+										progresshtml+='<p class="second-number">2</p>';
+										progresshtml+='<p class="third-number ">3</p>';
+										progresshtml+='</div>';
+										
+										$('.round-header').next('div').remove();
+										$('.round-header').after(progresshtml);
+										
+										getImageHavingRandomSubImg();
 									} else {
-										showImageWithRandomSubImg();
+										countrandomsub++;
+										if(countrandomsub=="1"){
+											$('.first-number').removeClass('selected-number');
+											$('.first-number').addClass('done-number');
+											$('.second-number').addClass('selected-number');
+																							
+										}else if(countrandomsub=="2"){
+											$('.second-number').removeClass('selected-number');
+											$('.second-number').addClass('done-number');
+											$('.third-number').addClass('selected-number');
+											
+										}
+													
+										if (countrandomsub >= "3") {
+											if (countrandomsub == "3") {
+												$('.second-round').removeClass(
+														'selected-p');
+												$('.third-round').addClass(
+														'selected-p');
+												
+												var progresshtml="";
+												progresshtml+='<div class="round-image-number">';
+												progresshtml+='<p class="first-number selected-number">1</p>';
+												progresshtml+='<p class="second-number">2</p>';
+												progresshtml+='<p class="third-number ">3</p>';
+												progresshtml+='</div>';
+												$('.round-header').next('div').remove();
+												$('.round-header').after(progresshtml);
+															
+												getImageHavingSimilarSubImg();
+											} else {
+												countsimilarsub++;
+												
+												if(countsimilarsub=="1"){
+													$('.first-number').removeClass('selected-number');
+													$('.first-number').addClass('done-number');
+													$('.second-number').addClass('selected-number');
+																									
+												}else if(countsimilarsub=="2"){
+													$('.second-number').removeClass('selected-number');
+													$('.second-number').addClass('done-number');
+													$('.third-number').addClass('selected-number');
+													
+												}
+												
+												if (countsimilarsub >= "3") {
+													$('.third-round').removeClass(
+															'selected-p');
+													$('.evaluation-round')
+															.addClass('selected-p');
+
+													//evaluation round starts here//
+													/* $("ul.second-ul li:not(:first-child)")
+															.remove(); */
+													$("ul.second-ul").empty();
+													
+													var evaluationprogresshtml="";
+													evaluationprogresshtml+='<div class="hide round-image-number">';
+													evaluationprogresshtml+='<p class="first-number selected-number">1</p>';
+													evaluationprogresshtml+='<p class="second-number">2</p>';
+													evaluationprogresshtml+='<p class="third-number ">3</p>';
+													evaluationprogresshtml+='<p class="fourth-number">4</p>';
+													evaluationprogresshtml+='<p class="fifth-number">5</p>';
+													evaluationprogresshtml+='<p class="sixth-number">6</p>';
+													evaluationprogresshtml+='<p class="seventh-number">7</p>';
+													evaluationprogresshtml+='<p class="eighth-number">8</p>';
+													evaluationprogresshtml+='<p class="ninth-number">9</p>';
+													evaluationprogresshtml+='</div>';
+													$('.round-header').next('div').remove();
+													$('.round-header').after(evaluationprogresshtml);
+													callImageDescriptionToEvaluate();
+
+												} else {
+													showImageWithSimilarSubImg();
+												}
+
+											}
+										} else {
+											showImageWithRandomSubImg();
+										}
+
 									}
 
+								} else {
+									showImage();
 								}
 
-							} else {
-								showImage();
+								$('#txtImageDescription').focus();
+								
+								
+							}else{
+								alert('Your session has been expired. You should log in again!!');
+								window.location.replace('${pageContext.request.contextPath}/createuserlogin');
 							}
-
-							$('#txtImageDescription').focus();
+							
 
 						},
 						error : function() {
@@ -657,10 +773,57 @@ div.radio-div p {
 
 					});
 		}
+		
+		function clearSession(){
+			$.ajax({
+				method : 'POST',
+				dataType : 'json',
+				url : '${pageContext.request.contextPath}/clearSession',
+				processData : false,
+				contentType : false,
+				success : function(data) {
+					alert('Your session expired with the page refresh. Please log in again!!');
+				},
+				error : function() {
+					alert('error occured while clearing user session!!');
+				}
+				
+				
+			});
+			
+		}
+		
+		
 
 		$(document)
 				.ready(
 						function() {
+														
+							if (window.performance) {
+								  console.info("window.performance work's fine on this browser");
+								}
+								  if (performance.navigation.type == 1) {
+								    console.info( "This page is reloaded" );
+								    
+								    clearSession();
+								    window.location
+									.replace('${pageContext.request.contextPath}/createuserlogin');
+								  } else {
+								    console.info( "This page is not reloaded");
+								  };
+								 
+								  $('.rating-div').hide();
+							
+								  $('#txtImageDescription').bind('input propertychange', function() {
+
+								     
+								      $('.rating-div').hide();
+								      
+								      if($.trim($(this).val()).length
+												&& $(this).val() != ""){
+								    	   	  $('.rating-div').show();
+								      }
+								});
 							$('.first-round').addClass('selected-p');
 							var progresshtml="";
 							progresshtml+='<div class="round-image-number">';
@@ -670,8 +833,9 @@ div.radio-div p {
 							progresshtml+='</div>';
 							$('.round-header').after(progresshtml);
 							getImageHavingNoSubImg();
-
+							
 							$('#txtImageDescription').focus();
+							$('input[name=difficultyrating]').attr('checked',false);
 							$('input:button')
 									.click(
 											function() {
@@ -682,20 +846,31 @@ div.radio-div p {
 														&& $(this).val() != "") {
 													alert('Image description can not be empty!!');
 												} else {
-													var imageid = $(this)
-															.closest('li')
-															.find('.imageid')
-															.text();
-													var imagetype = $(this)
+													
+													var rating=$('input[name=difficultyrating]:checked').val();
+													if(rating){
+														var imageid = $(this)
+														.closest('li')
+														.find('.imageid')
+														.text();
+														var imagetype = $(this)
 															.closest('li')
 															.find('.imagetype')
 															.text();
-													var strData = {
-														"imagedescription" : description,
-														"imageid" : imageid,
-														"imagetype" : imagetype
+														var rating=$('input[name=difficultyrating]:checked').val();
+														
+														var strData = {
+															"imagedescription" : description,
+															"imageid" : imageid,
+															"imagetype" : imagetype,
+															"difficultyrating":rating
+														}
+														saveImageDescription(strData);
+														$('input[name=difficultyrating]').attr('checked',false);
+													}else{
+														alert('Please fill out difficulty ratings before saving description!!')
 													}
-													saveImageDescription(strData);
+																								
 												}
 											})
 
