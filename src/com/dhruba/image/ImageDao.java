@@ -270,12 +270,13 @@ public class ImageDao {
 	}
 
 	public int saveImageDescription(AdminImage objImageDescription, User user) {
-		String sql="Insert into imagedescription(image_id,image_description,sub_image,user_id) values(:imageId,:imageDescription,:subImage,:userId)";
+		String sql="Insert into imagedescription(image_id,image_description,sub_image,user_id,difficulty_rating) values(:imageId,:imageDescription,:subImage,:userId,:difficultyRating)";
 		MapSqlParameterSource source=new MapSqlParameterSource();
 		source.addValue("imageId", objImageDescription.getImageid());
 		source.addValue("imageDescription", objImageDescription.getImagedescription());
 		source.addValue("subImage", objImageDescription.getImagetype());
 		source.addValue("userId", user.getUserid());
+		source.addValue("difficultyRating", objImageDescription.getDifficultyrating());
 		
 		return param.update(sql, source);
 	}
@@ -417,7 +418,7 @@ public class ImageDao {
 	}
 
 	public List<AdminImage> callImageDescriptionToEvaluate(User user) {
-		String sql="select a.imagedescription_id, a.image_description, b.parentimage_description from imagedescription a, image b where a.image_id=b.image_id and a.user_id <> :userId and a.isevaluated='0' order by rand() limit 9";
+		String sql="select a.imagedescription_id, a.image_description, b.parentimage_description, b.image_name, b.image_type from imagedescription a, image b where a.image_id=b.image_id and a.user_id <> :userId and a.isevaluated='0' order by rand() limit 9";
 		MapSqlParameterSource source=new MapSqlParameterSource();
 		source.addValue("userId", user.getUserid());
 		return param.query(sql, source, new RowMapper<AdminImage>() {
@@ -428,6 +429,8 @@ public class ImageDao {
 				image.setImagedescriptionid(rs.getInt("imagedescription_id"));
 				image.setImagedescription(rs.getString("image_description"));
 				image.setParentimagedescription(rs.getString("parentimage_description"));
+				image.setImagename(rs.getString("image_name"));
+				image.setImagetype(rs.getString("image_type"));
 				return image;
 			}
 		});
