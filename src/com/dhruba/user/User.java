@@ -17,10 +17,16 @@ public class User {
 	private Boolean reminded;
 	private Boolean awareof;
 	private String email;
+	private String loginstatus;
 	
-	
-	
-	
+	public String getLoginstatus() {
+		return loginstatus;
+	}
+
+	public void setLoginstatus(String loginstatus) {
+		this.loginstatus = loginstatus;
+	}
+
 	public Boolean getAwareof() {
 		return awareof;
 	}
