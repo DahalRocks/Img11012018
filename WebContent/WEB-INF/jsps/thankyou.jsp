@@ -4,7 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Thank you page</title>
+	<style type="text/css">
+body{
+background-color:#f8f7fe
+}
 </head>
 <body>
 	<h1>Thank you for your participation!!</h1>
