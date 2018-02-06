@@ -31,7 +31,15 @@ public class AdminImage {
 	private boolean isEvaluated;
 	@NotEmpty(message="Parent image description can not be empty")
 	private String parentimagetype;
+	private int difficultyrating;
+	 
 	
+	public int getDifficultyrating() {
+		return difficultyrating;
+	}
+	public void setDifficultyrating(int difficultyrating) {
+		this.difficultyrating = difficultyrating;
+	}
 	public String getParentimagetype() {
 		return parentimagetype;
 	}
