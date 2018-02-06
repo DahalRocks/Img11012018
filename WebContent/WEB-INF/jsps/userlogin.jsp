@@ -8,6 +8,10 @@
 <title>Login Page</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/mainold.css">
+<style type="text/css">
+	body{
+	background-color:#f8f7fe
+	}
 </head>
 <body>
 <div class="divForm">
