@@ -12,6 +12,7 @@
 	body{
 	background-color:#f8f7fe
 	}
+	</style>	
 </head>
 <body>
 <div class="divForm">
