@@ -6,9 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Thank you page</title>
 	<style type="text/css">
-body{
-background-color:#f8f7fe
-}
+		body{
+		background-color:#f8f7fe
+		}
+	</style>
 </head>
 <body>
 	<h1>Thank you for your participation!!</h1>
