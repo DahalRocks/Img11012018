@@ -420,10 +420,16 @@ public class ImageController {
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		AdminImage objImageDescription = mapper.readValue(strData, AdminImage.class);
-		imageService.saveImageDescription(objImageDescription,session);
-
-		String result = new String("true");
-		return result;
+		User user=(User)session.getAttribute("user");
+		if(user.getLoginstatus()!="loggedout"){
+			imageService.saveImageDescription(objImageDescription,user);
+			String result = new String("true");
+			return result;
+		}else{
+			String result = new String("false");
+			return result;
+		}
+			
 	}
 	@RequestMapping(value="/saveEvaluation", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
 	public @ResponseBody Object saveEvaluation(@RequestBody String strEvaluation) throws JsonParseException, JsonMappingException, IOException{
@@ -443,5 +449,15 @@ public class ImageController {
 		result=objMapper.writeValueAsString(lstEvaluation);
 		return result;
 	}
+	
+	@RequestMapping(value="/clearSession", method=RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object clearSession(HttpSession session) throws JsonParseException, JsonMappingException, IOException{
+		user.setLoginstatus("loggedout");
+		session.setAttribute("user", user);
+		String result=new String("true");
+		return result;
+	}
+	
+	
 
 }
