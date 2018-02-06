@@ -198,10 +198,10 @@ public class ImageService {
 		return lstImage;
 	}
 
-	public void saveImageDescription(AdminImage objImageDescription, HttpSession session) {
+	public void saveImageDescription(AdminImage objImageDescription, User user) {
 		
 		try {
-			User user=(User)session.getAttribute("user");
+						
 			imageDao.saveImageDescription(objImageDescription,user);
 		} catch (DataAccessException e) {
 			
@@ -277,7 +277,7 @@ public class ImageService {
 		try {
 			lstEvaluation=imageDao.callImageDescriptionToEvaluate(user);
 		} catch (DataAccessException e) {
-			System.out.println(e.getMessage());
+			
 		}
 		return lstEvaluation;
 	}
