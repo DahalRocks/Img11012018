@@ -25,7 +25,7 @@
 	<div>for</div>
 	<div>Image Description</div>
 	</header>
-	<sf:form action="/SimpleWebPage/enteruser" method="post"
+	<sf:form action="/enteruser" method="post"
 		commandName="userDetail" class="form-style-7">
 		<ul>
 		
