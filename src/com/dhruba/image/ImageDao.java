@@ -207,6 +207,7 @@ public class ImageDao {
 				AdminImage image=new AdminImage();
 				image.setImageid(rs.getInt("image_id"));
 				image.setImagename(rs.getString("image_name"));
+				image.setImagetype(rs.getString("image_type"));
 				return image;
 			}
 		});
@@ -222,6 +223,7 @@ public class ImageDao {
 				AdminImage image=new AdminImage();
 				image.setImageid(rs.getInt("image_id"));
 				image.setImagename(rs.getString("image_name"));
+				image.setImagetype(rs.getString("image_type"));
 				return image;
 			}
 		});
@@ -236,6 +238,7 @@ public class ImageDao {
 				AdminImage image=new AdminImage();
 				image.setImageid(rs.getInt("image_id"));
 				image.setImagename(rs.getString("image_name"));
+				image.setImagetype(rs.getString("image_type"));
 				return image;
 			}
 		});
