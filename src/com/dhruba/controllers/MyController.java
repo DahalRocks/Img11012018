@@ -11,6 +11,10 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +59,8 @@ public class MyController {
 	private UserDetail userDetail;
 	@Autowired
 	private UserService userService;
+	@Autowired
+    private JavaMailSender mailSender;
 
 	@RequestMapping("/getuserdetailform")
 	public String getUserDetail(Model model) {
@@ -77,18 +83,63 @@ public class MyController {
 			return "form_userdetail";
 		} else {
 			if (!userService.checkIfUserExist(userDetail)) {
-				int saveresult = userService.enterUserDetail(userDetail);
-				if (saveresult > 0)
-					userDetail = userService.getUserDetailId(userDetail);
-				session.setAttribute("userDetail", userDetail);
-
-			} else {
+				SimpleMailMessage email = new SimpleMailMessage();
+		        String recipientAddress=userDetail.getEmail();
+		        String subject="Online Experiment for Image Description";
+		        String message="";
+		        message+="Dear Participant,";
+		        message+="\r\n";
+		        message+="\r\n I would like to thank you for your cooperation in this work.";
+		        message+="\r\n";
+		        message+="\r\n If you are interested in this topic, you can contact me in the future to know about the result of this research.";
+		        message+="\r\n";
+		        message+="User Name:";
+		        message+="\r\n";
+		        message+=userDetail.getEmail();
+		        message+="\r\n";
+		        message+="Password:";
+		        message+="\r\n";
+		        message+="password123";
+		        message+="\r\n";
+		        message+="\r\n";
+		        message+=" Pleas go to this link :http://localhost:8080/SimpleWebPage/createuserlogin";
+		        message+="\r\n";
+		        message+="\r\n";
+		        message+="Thank you!!";
+		        message+="\r\n";
+		        message+="Dhruba Dahal";
+		        message+="\r\n";
+		        message+="Student, HiOA, Norway";
+		        email.setTo(recipientAddress);
+		        email.setSubject(subject);
+		        email.setText(message);
+		             
+		        try {
+		        	mailSender.send(email);
+		        	int saveresult = userService.enterUserDetail(userDetail);
+					if (saveresult > 0){
+						userDetail = userService.getUserDetailId(userDetail);
+						session.setAttribute("userDetail", userDetail);
+						user.setFullname(userDetail.getEmail());
+						user.setUsername(userDetail.getEmail());
+						user.setPassword("password123");
+						user.setEmail(userDetail.getEmail());
+						user.setAwareof(false);
+						userService.saveUser(user);
+						
+					}
+						
+		         } catch (Exception e) {
+					model.addAttribute("message", "There is some problem in sending email.");
+					return "form_userdetail";
+				} 
+		    } else {
 				model.addAttribute("message", "This email address has already been registered.");
 				return "form_userdetail";
 			}
 
 		}
-		return "redirect:callcontent";
+		return "emailverification";
 	}
 	
 	@RequestMapping("/experimentpage")
@@ -97,11 +148,16 @@ public class MyController {
 		return "experimentpage";
 	}
 
-	@RequestMapping("/")
+	@RequestMapping("/userlogin")
 	public String getUserLogin(Model model) {
 		model.addAttribute("userlogin", new User());
 		return "userlogin";
 	}
+	@RequestMapping("/")
+	public String getOverview() {
+		return "overview";
+	}
+
 
 	@RequestMapping("/adminpage")
 	public String getAdminPage() {
