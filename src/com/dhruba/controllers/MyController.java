@@ -102,7 +102,7 @@ public class MyController {
 		        message+="password123";
 		        message+="\r\n";
 		        message+="\r\n";
-		        message+=" Pleas go to this link :http://localhost:8080/SimpleWebPage/createuserlogin";
+		        message+=" Pleas go to this link :http://tomcat-datacollection.193b.starter-ca-central-1.openshiftapps.com/createuserlogin";
 		        message+="\r\n";
 		        message+="\r\n";
 		        message+="Thank you!!";
