@@ -32,8 +32,17 @@ public class AdminImage {
 	@NotEmpty(message="Parent image description can not be empty")
 	private String parentimagetype;
 	private int difficultyrating;
+	private float timetaken;
+	
+	
 	 
 	
+	public float getTimetaken() {
+		return timetaken;
+	}
+	public void setTimetaken(float timetaken) {
+		this.timetaken = timetaken;
+	}
 	public int getDifficultyrating() {
 		return difficultyrating;
 	}
