@@ -287,25 +287,7 @@ public class ImageDao {
 		return param.update(sql, source);
 	}
 	
-	public int saveTestFile(TestImage image){
-		String sql="Insert into test (imagefile) values(:fileStream)";
-		MapSqlParameterSource source=new MapSqlParameterSource();
-		source.addValue("fileStream", image.getFileStream());
-		return param.update(sql, source);
-	}
 	
-	public List<TestImage>selectTestFile(){
-		String sql="Select * from test";
-		return param.query(sql, new RowMapper<TestImage>() {
-			@Override
-			public TestImage mapRow(ResultSet rs, int rowNum) throws SQLException {
-				TestImage image=new TestImage();
-				image.setImagefile(rs.getBlob("imagefile"));
-				return image;
-			}
-		});
-		
-	}
 
 	public List<AdminImage> getImageWithRandomSubImg() {
 		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='random' order by rand() limit 3";
