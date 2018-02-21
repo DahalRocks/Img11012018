@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.dhruba.page.Page;
 import com.dhruba.user.User;
+import com.mysql.jdbc.Blob;
 
 @Component
 @Scope("session")
@@ -273,15 +274,37 @@ public class ImageDao {
 	}
 
 	public int saveImageDescription(AdminImage objImageDescription, User user) {
-		String sql="Insert into imagedescription(image_id,image_description,sub_image,user_id,difficulty_rating) values(:imageId,:imageDescription,:subImage,:userId,:difficultyRating)";
+		
+		String sql="Insert into imagedescription(image_id,image_description,sub_image,user_id,difficulty_rating, time_taken) values(:imageId,:imageDescription,:subImage,:userId,:difficultyRating,:timeTaken)";
 		MapSqlParameterSource source=new MapSqlParameterSource();
 		source.addValue("imageId", objImageDescription.getImageid());
 		source.addValue("imageDescription", objImageDescription.getImagedescription());
 		source.addValue("subImage", objImageDescription.getImagetype());
 		source.addValue("userId", user.getUserid());
 		source.addValue("difficultyRating", objImageDescription.getDifficultyrating());
+		source.addValue("timeTaken", objImageDescription.getTimetaken());
 		
 		return param.update(sql, source);
+	}
+	
+	public int saveTestFile(TestImage image){
+		String sql="Insert into test (imagefile) values(:fileStream)";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("fileStream", image.getFileStream());
+		return param.update(sql, source);
+	}
+	
+	public List<TestImage>selectTestFile(){
+		String sql="Select * from test";
+		return param.query(sql, new RowMapper<TestImage>() {
+			@Override
+			public TestImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				TestImage image=new TestImage();
+				image.setImagefile(rs.getBlob("imagefile"));
+				return image;
+			}
+		});
+		
 	}
 
 	public List<AdminImage> getImageWithRandomSubImg() {
