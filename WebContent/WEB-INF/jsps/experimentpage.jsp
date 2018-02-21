@@ -4,12 +4,19 @@
 <html>
 <head>
 <style type="text/css">
+
+
 .hide {
 	visibility: hidden;
 }
 
 form.form-style-7 {
 	max-width: 1140px;
+}
+.form-style-7 ul li{
+	border:0px solid #fff;
+	margin-left:10px;
+
 }
 
 body {
@@ -39,6 +46,14 @@ span {
 	font-style: italic;
 	font-weight: bold;
 	color: #0048ce;
+}
+.guideheader{
+	font-style: italic;
+	font-weight: bold;
+	color:blue;
+	background-color:silver;
+	padding-left:10px;
+	
 }
 
 .round-header {
@@ -152,6 +167,7 @@ div.radio-div p {
 	font-weight: bold;
 	line-height: 200%;
 	text-align: left;
+	color:saddlebrown;
 }
 
 .guidline-div {
@@ -165,6 +181,18 @@ div.radio-div p {
 	width: 30%;
 	height: auto;
 	float: left;
+}
+.concise{
+	line-height:200%;
+	font-family:arial;
+}
+.objective{
+	line-height:200%;
+	font-family:arial;
+}
+.language{
+	line-height:200%;
+	font-family:arial;
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -182,7 +210,7 @@ div.radio-div p {
 	<div class=" divForm main-body">
 		<form action="" class="form-style-7">
 			<ul class="parent-ul">
-				<li style="border: none"><div class="round-header">
+				<li id="liTitle" style="border: none"><div class="round-header">
 						<p class="first-round">First Round</p>
 						<p class="second-round">Second Round</p>
 						<p class="third-round">Third Round</p>
@@ -191,16 +219,16 @@ div.radio-div p {
 				<li><div class="guidline-div"></div></li>
 			</ul>
 			<ul class="second-ul">
-				<li><label for="parentimg"
+				<li><!-- <label for="parentimg"
 					style="font-weight: bold; text-transform: uppercase">Write
-						a Description for this image</label><img
+						a Description for this image</label> --><img
 					style="width: 404px; height: 404px" id="parentimg" alt=""
-					src="${pageContext.request.contextPath}/resources/galleryimage/bull.jpg">
-					<textarea id="txtImageDescription" rows="50" cols="50"
-						style="width: 100%; height: 100px; border: 2px solid black; border-radius: 10px; margin-top: 10px"></textarea>
+					src="${pageContext.request.contextPath}/resources/galleryimage/noimage.png">
+					<textarea id="txtImageDescription" 
+						style="width: 404px; height: 100px; border: 2px solid black; border-radius: 10px; margin-top: 10px"></textarea>
 				</li>
 				<li class=" exampleli hide"><label>Example Image
-						Description</label><img style="width: 200px; height: 200px"
+						Description</label><img style="width: 400px; height: 400px"
 					id="exampleimage" alt="" src="">
 					<div class="img-desc-paragraph"></div></li>
 				<li style="border: 0px solid">
@@ -242,6 +270,7 @@ div.radio-div p {
 		var imagelstwithrandomsubimg = "";
 		var imagelstwithsimilarsubimg = "";
 		var descriptionlst = "";
+		var previoustime="";
 		function showImage() {
 			for (var i = 0; i < imagelst.length; ++i) {
 				if (i == count) {
@@ -292,15 +321,19 @@ div.radio-div p {
 						$('.guidline-div').html(mapguidlines);
 					}else if(imagelst[i].imagetype=='other'){
 						
+						var otherguidlinestitle="";
+						otherguidlinestitle+="<div class='divGuideTitle' style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
+						otherguidlinestitle+="Please follow these guidelines to describe the image given below";
+						otherguidlinestitle+="</div>"; 
 						var otherguidlines="<div class='concise'><ul>";
-						otherguidlines+="<li style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
+						/* otherguidlines+="<li style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
 						otherguidlines+="Please follow these guidelines to describe the image given below";
-						otherguidlines+="</li>";
+						otherguidlines+="</li>"; */
 						otherguidlines+="<li>";
-						otherguidlines+="More is NOT better, be succinct";
-						otherguidlines+="Do not repeat information presented in the main or adjacent texts. Instead, direct readers to existing descriptions, when available (e.g. captions)";
-						otherguidlines+="Include color only when it is significant (e.g. arbitrary colors assigned for elements of bar graphs and line charts need not be specified)";
-						otherguidlines+="Avoid introducing new concepts or terms";
+						otherguidlines+="<p class='guideheader'>More is NOT better, be succinct</p><br>";
+						otherguidlines+="Do not repeat information presented in the main or adjacent texts. Instead, direct readers to existing descriptions, when available (e.g. captions).";
+						otherguidlines+="Include color only when it is significant (e.g. arbitrary colors assigned for elements of bar graphs and line charts need not be specified).";
+						otherguidlines+="Avoid introducing new concepts or terms.";
 						otherguidlines+="</li>";
 						otherguidlines+="<li style='border:0px solid'>";
 						otherguidlines+="</li>";
@@ -308,9 +341,9 @@ div.radio-div p {
 						
 						otherguidlines+="<div class='objective'><ul>";
 						otherguidlines+="<li>";
-						otherguidlines+="Describe only what you see: physical appearances and actions rather than emotions and possible intentions";
-						otherguidlines+="Do not interpret or analyze the material. Instead, allow readers to form their own opinions";
-						otherguidlines+="Do not omit uncomfortable or controversial content, such as images associated with politics, religion, or sex";
+						otherguidlines+="<p class='guideheader'>Describe only what you see </p><br>Physical appearances and actions rather than emotions and possible intentions.";
+						otherguidlines+="Do not interpret or analyze the material. Instead, allow readers to form their own opinions.";
+						otherguidlines+="Do not omit uncomfortable or controversial content, such as images associated with politics, religion, or sex.";
 						otherguidlines+="</li>";
 						otherguidlines+="<li style='border:0px solid'>";
 						otherguidlines+="</li>";
@@ -318,17 +351,18 @@ div.radio-div p {
 						
 						otherguidlines+="<div class='language'><ul>";
 						otherguidlines+="<li>";
-						otherguidlines+="Use active verbs in the present tense";
-						otherguidlines+="Check spelling, grammar, and punctuation. Sometimes it is acceptable to break traditional grammar rules for brevity and clarity. However, it is important to be consistent in this practice";
+						otherguidlines+="<p class='guideheader'>Use active verbs in the present tense</p><br>";
+						otherguidlines+="Check spelling, grammar, and punctuation. Sometimes it is acceptable to break traditional grammar rules for brevity and clarity. However, it is important to be consistent in this practice.";
 						otherguidlines+="Apply the same writing style and terminology as the surrounding text";
-						otherguidlines+="Write out abbreviations and symbols to ensure proper pronunciation by screen readers";
-						otherguidlines+="Use descriptive vocabulary that adds meaning (e.g. 'map' instead of 'image')";
+						otherguidlines+="Write out abbreviations and symbols to ensure proper pronunciation by screen readers.";
+						otherguidlines+="Use descriptive vocabulary that adds meaning (e.g. 'map' instead of 'image').";
 						otherguidlines+="</li>";
 						otherguidlines+="<li style='border:0px solid'>";
 						otherguidlines+="</li>";
 						otherguidlines+="</ul></div>";
 						
 						$('.guidline-div').html(otherguidlines);
+						$('#liTitle').append(otherguidlinestitle);
 										
 					}
 				}
@@ -345,7 +379,7 @@ div.radio-div p {
 							"${pageContext.request.contextPath}/resources/galleryimage/"
 									+ imagelstwithrandomsubimg[i].subimagename);
 					var description = imagelstwithrandomsubimg[i].randomimagedescription;
-					var arr = description.split('.');
+					var arr = description.split(';');
 					if (arr.length > "1") {
 						var htmldescriptionlst = "<div class=\"description-list\">";
 						$.each(arr, function(i, val) {
@@ -384,7 +418,7 @@ div.radio-div p {
 											+ imagelstwithsimilarsubimg[i].subimagename);
 
 					var description = imagelstwithsimilarsubimg[i].similarimagedescription;
-					var arr = description.split('.');
+					var arr = description.split(';');
 					if (arr.length > "1") {
 						var htmldescriptionlst = "<div class=\"description-list\">";
 						$.each(arr, function(i, val) {
@@ -597,7 +631,7 @@ div.radio-div p {
 				for (var i = 0; i < descriptionlst.length; ++i) {
 					if (i == countdescription) {
 						var strParentDesc = descriptionlst[i].parentimagedescription;
-						var arrParentDesc = strParentDesc.split('.');
+						var arrParentDesc = strParentDesc.split(';');
 						var html = "";
 						html += '<li><label for="description">Rate the follwing description</label>';
 						html += '<p style="font-family:arial;line-height:145%;font-size:20px;font-weight:600">Please compare the description of given image in the first box with the description sentences available in the second box.';
@@ -666,9 +700,30 @@ div.radio-div p {
 					});
 
 		}
+		
+		function inputValue(description,imageid,imagetype,rating){
+			this.imagedescription=description,
+			this.imageid=imageid,
+			this.imagetype=imagetype,
+			this.difficultyrating=rating
+		}
+		function flatten(obj) {
+		    var result = Object.create(obj);
+		    for(var key in result) {
+		        result[key] = result[key];
+		    }
+		    return result;
+		}
 
-		function saveImageDescription(strData) {
-			var pdata = JSON.stringify(strData);
+		function saveImageDescription(strDataObj) {
+			
+			
+			var currenttime=new Date($.now());
+			var timediff=currenttime-previoustime;
+			timediff=timediff/(60*1000);
+			inputValue.prototype.timetaken=timediff;
+			var pdata = JSON.stringify(flatten(strDataObj));
+			
 			$
 					.ajax({
 						method : 'POST',
@@ -678,6 +733,7 @@ div.radio-div p {
 						processData : false,
 						contentType : "application/json;charset=utf-8",
 						success : function(result) {
+							previoustime=currenttime;
 							if (result) {
 								$('#txtImageDescription').val(' ');
 								count++;
@@ -701,10 +757,12 @@ div.radio-div p {
 												'selected-p');
 										$('.second-round').addClass(
 												'selected-p');
+										
 										var hinthtml = "<p>How difficult was it to write the description after having the hint with picture?</p>";
 										$('.hint-div').html("");
 										$('.hint-div').html(hinthtml);
 										$('.guidline-div').html('');
+										$('.divGuideTitle').remove();
 										var motivatehtml='<p class="guideline-p" style="font-family:arial;color:gray;font-size:26px">';
 										motivatehtml+='Please look at the example below to make your description better</p>'
 										$('.guidline-div').html(motivatehtml);
@@ -856,6 +914,9 @@ div.radio-div p {
 		$(document)
 				.ready(
 						function() {
+							
+							previoustime=new Date($.now());
+							
 							if (window.performance) {
 								console
 										.info("window.performance work's fine on this browser");
@@ -924,13 +985,10 @@ div.radio-div p {
 														var rating = $(
 																'input[name=difficultyrating]:checked')
 																.val();
-														var strData = {
-															"imagedescription" : description,
-															"imageid" : imageid,
-															"imagetype" : imagetype,
-															"difficultyrating" : rating
-														}
-														saveImageDescription(strData);
+														
+														var strDataObj=new inputValue(description,imageid,imagetype,rating);
+														
+														saveImageDescription(strDataObj);
 														$(
 																'input[name=difficultyrating]')
 																.attr(
