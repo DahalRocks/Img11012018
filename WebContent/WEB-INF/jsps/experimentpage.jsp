@@ -194,6 +194,14 @@ div.radio-div p {
 	line-height:200%;
 	font-family:arial;
 }
+.img-desc-paragraph{
+	font-family:arial;
+	
+}
+.full-width{
+	display:block;
+	width:100%
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Experiment Page</title>
@@ -231,7 +239,7 @@ div.radio-div p {
 						Description</label><img style="width: 400px; height: 400px"
 					id="exampleimage" alt="" src="">
 					<div class="img-desc-paragraph"></div></li>
-				<li style="border: 0px solid">
+				<li style="border: 0px solid; margin-top:0px">
 					<div class="rating-div">
 						<div class="hint-div"></div>
 						<div>Not Difficult</div>
@@ -283,9 +291,10 @@ div.radio-div p {
 					if(imagelst[i].imagetype=='graph'){
 						var graphguidlines="<ul>";
 						graphguidlines+="<li style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
-						graphguidlines+="Please follow these guidelines to describe the image given below";
+						//graphguidlines+="Please follow these guidelines to describe the image given below";
+						graphguidlines+="Please write a text description for the image given below";
 						graphguidlines+="</li>";
-						graphguidlines+="<li>";
+						/* graphguidlines+="<li>";
 						graphguidlines+="Provide the title and axis labels";
 						graphguidlines+="</li>";
 						graphguidlines+="<li>";
@@ -295,15 +304,15 @@ div.radio-div p {
 						graphguidlines+="If it is necessary to be more specific, convert the data into an accessible table";
 						graphguidlines+="</li>";
 						graphguidlines+="<li style='border:0px solid'>";
-						graphguidlines+="</li>";
+						graphguidlines+="</li>"; */
 						graphguidlines+="</ul>";
 						$('.guidline-div').html(graphguidlines);
 					}else if(imagelst[i].imagetype=='map'){
 						var mapguidlines="<ul>";
 						mapguidlines+="<li style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
-						mapguidlines+="Please follow these guidelines to describe the image given below";
+						mapguidlines+="Please write a text description for the image given below";
 						mapguidlines+="</li>";
-						mapguidlines+="<li>";
+						/* mapguidlines+="<li>";
 						mapguidlines+="Focus on the central teaching point of map to determine if borders, region shapes, and bodies of water are important";
 						mapguidlines+="</li>";
 						mapguidlines+="<li>";
@@ -316,20 +325,25 @@ div.radio-div p {
 						mapguidlines+="The elements in the key can be folded in to the description of the map itself and do not need to be described separately";
 						mapguidlines+="</li>";
 						mapguidlines+="<li style='border:0px solid'>";
-						mapguidlines+="</li>";
+						mapguidlines+="</li>"; */
 						mapguidlines+="</ul>";
 						$('.guidline-div').html(mapguidlines);
 					}else if(imagelst[i].imagetype=='other'){
 						
-						var otherguidlinestitle="";
+						var mapguidlines="<ul>";
+						mapguidlines+="<li style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
+						mapguidlines+="Please write a text description for the image given below";
+						mapguidlines+="</li>";
+						
+						 /* var otherguidlinestitle="";
 						otherguidlinestitle+="<div class='divGuideTitle' style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
-						otherguidlinestitle+="Please follow these guidelines to describe the image given below";
-						otherguidlinestitle+="</div>"; 
-						var otherguidlines="<div class='concise'><ul>";
-						/* otherguidlines+="<li style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
+						otherguidlinestitle+="Please write a text description for the image given below";
+						otherguidlinestitle+="</div>";  
+						 var otherguidlines="<div class='concise'><ul>";
+						 otherguidlines+="<li style='font-size:30px;font-weight:bold;color:gray;border:0px solid'>";
 						otherguidlines+="Please follow these guidelines to describe the image given below";
-						otherguidlines+="</li>"; */
-						otherguidlines+="<li>";
+						otherguidlines+="</li>";  
+						 otherguidlines+="<li>";
 						otherguidlines+="<p class='guideheader'>More is NOT better, be succinct</p><br>";
 						otherguidlines+="Do not repeat information presented in the main or adjacent texts. Instead, direct readers to existing descriptions, when available (e.g. captions).";
 						otherguidlines+="Include color only when it is significant (e.g. arbitrary colors assigned for elements of bar graphs and line charts need not be specified).";
@@ -358,11 +372,11 @@ div.radio-div p {
 						otherguidlines+="Use descriptive vocabulary that adds meaning (e.g. 'map' instead of 'image').";
 						otherguidlines+="</li>";
 						otherguidlines+="<li style='border:0px solid'>";
-						otherguidlines+="</li>";
-						otherguidlines+="</ul></div>";
+						otherguidlines+="</li>"; 
+						otherguidlines+="</ul></div>"; */ 
 						
-						$('.guidline-div').html(otherguidlines);
-						$('#liTitle').append(otherguidlinestitle);
+						$('.guidline-div').html(mapguidlines);
+						//$('#liTitle').append(otherguidlinestitle);
 										
 					}
 				}
@@ -633,9 +647,9 @@ div.radio-div p {
 						var strParentDesc = descriptionlst[i].parentimagedescription;
 						var arrParentDesc = strParentDesc.split(';');
 						var html = "";
-						html += '<li><label for="description">Rate the follwing description</label>';
+						html += '<li style="width:100%"><label for="description">Rate the follwing description</label>';
 						html += '<p style="font-family:arial;line-height:145%;font-size:20px;font-weight:600">Please compare the description of given image in the first box with the description sentences available in the second box.';
-						html += ' If you find it similar to any of the second box sentences,';
+						html += ' If you find it similar to the second box sentences,';
 						html += ' rate it very similar, similar or not similar accordingly.</p>';
 						html += '<div class="user-image-description">';
 						html += '<img style="width:200px;height:200px" alt="" src="${pageContext.request.contextPath}/resources/galleryimage/'+descriptionlst[i].imagename+'"/>';
@@ -666,6 +680,7 @@ div.radio-div p {
 						html += '</li>';
 						html += '<li>';
 						html += '</li>';
+						$('ul.second-ul').addClass('full-width');
 						$('ul.second-ul').html(html);
 					}
 				}
@@ -762,7 +777,7 @@ div.radio-div p {
 										$('.hint-div').html("");
 										$('.hint-div').html(hinthtml);
 										$('.guidline-div').html('');
-										$('.divGuideTitle').remove();
+										/* $('.divGuideTitle').remove(); */
 										var motivatehtml='<p class="guideline-p" style="font-family:arial;color:gray;font-size:26px">';
 										motivatehtml+='Please look at the example below to make your description better</p>'
 										$('.guidline-div').html(motivatehtml);
