@@ -958,7 +958,7 @@ div.radio-div p {
 											$('.rating-div').show();
 										}
 									});
-							var hinthtml = "<p>How difficult was it to write the description after reading the given guidelines?</p>";
+							var hinthtml = "<p>How difficult was it to write the description?</p>";
 							$('.hint-div').html("");
 							$('.hint-div').html(hinthtml);
 							$('.first-round').addClass('selected-p');
