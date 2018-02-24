@@ -522,12 +522,15 @@ div.radio-div p {
 							var strRating = $(
 									'input[name="evaluationstring"]:checked')
 									.val();
+							var evadescid=$(this).parent('div').find('p.imagedescriptionid').text();
 							if (strRating) {
 								var strEvaluation = {
 									"evaluationstring" : strRating,
-									"imagedescriptionid" : $('#imagedescriptionid').text()
+									"imagedescriptionid" : evadescid
 									
 								};
+															
+								
 								var pdata = JSON.stringify(strEvaluation);
 
 								$
@@ -653,7 +656,7 @@ div.radio-div p {
 						html += ' rate it very similar, similar or not similar accordingly.</p>';
 						html += '<div class="user-image-description">';
 						html += '<img style="width:200px;height:200px" alt="" src="${pageContext.request.contextPath}/resources/galleryimage/'+descriptionlst[i].imagename+'"/>';
-						html += '<p>Image Description:' + '"'
+						html += '<p>' + '"'
 						+ descriptionlst[i].imagedescription + '"'
 						+ '</p>';
 						html += '</div>';
@@ -958,7 +961,7 @@ div.radio-div p {
 											$('.rating-div').show();
 										}
 									});
-							var hinthtml = "<p>How difficult was it to write the description?</p>";
+							var hinthtml = "<p>How difficult was it to write the description ?</p>";
 							$('.hint-div').html("");
 							$('.hint-div').html(hinthtml);
 							$('.first-round').addClass('selected-p');
