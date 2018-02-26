@@ -14,8 +14,14 @@
 	href="${pageContext.request.contextPath}/resources/css/me.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
 <style type="text/css">
+	body{
+	font-family:arial;
+	}
 	.form-style-7 li > label{
 		height:18px;
+	}
+	.compalsary{
+		color:red;
 	}
 </style>
 </head>
@@ -41,13 +47,13 @@
 				<sf:option value="7">51-56</sf:option>
 				<sf:option value="8">57-62</sf:option>
 			</sf:select><sf:errors
-						path="age" style="color:red;"></sf:errors></li>
+						path="age" style="color:red;"></sf:errors><p class="compalsary">*</p></li>
 			<li><label for="gender">Your Gender:</label> <sf:select id="gender" path="gender">
 					<sf:option value="">Select</sf:option>
 					<sf:option value="male">male</sf:option>
 					<sf:option value="female">female</sf:option>
 				</sf:select> <sf:errors
-						path="gender" style="color:red;"></sf:errors></li>
+						path="gender" style="color:red;"></sf:errors><p class="compalsary">*</p></li>
 			
 			<li><label for="education">Your Education:</label> <sf:select id="education" path="education">
 					<sf:option value="">Select</sf:option>
@@ -55,18 +61,69 @@
 					<sf:option value="2">College/University</sf:option>
 				</sf:select>
 				<sf:errors
-						path="education" style="color:red;"></sf:errors></li>
+						path="education" style="color:red;"></sf:errors><p class="compalsary">*</p></li>
+						<li>
+				<label for="profession">Your Profession:</label><sf:select id="profession" path="profession">
+					<sf:option value="">Select</sf:option>
+					<sf:option value="student">Student</sf:option>
+					<sf:option value="journalist">Journalist</sf:option>
+					<sf:option value="researcher">Researcher</sf:option>
+					<sf:option value="software-developer">Software Developer</sf:option>
+					<sf:option value="Web-Worker">Web worker</sf:option>
+					<sf:option value="Other">Other</sf:option>
+				</sf:select>
+			<sf:errors
+						path="profession" style="color:red;"></sf:errors><p class="compalsary">*</p>
+			</li>
+						<li>
+				<label for="englishspeaker">Are you a Native English Speaker?:</label><sf:select id="englishspeaker" path="englishspeaker">
+					<sf:option value="">Select</sf:option>
+					<sf:option value="yes">Yes</sf:option>
+					<sf:option value="no">No</sf:option>
+				</sf:select>
+			<sf:errors
+						path="englishspeaker" style="color:red;"></sf:errors><p class="compalsary">*</p>
+			</li>
+			<li>
+				<label for="englishlevel">Your English Language Level:</label><sf:select id="englishlevel" path="englishlevel">
+					<sf:option value="">Select</sf:option>
+					<sf:option value="average">Average</sf:option>
+					<sf:option value="competent">Competent</sf:option>
+					<sf:option value="fluent">Fluent</sf:option>
+				</sf:select>
+			<sf:errors
+						path="englishlevel" style="color:red;"></sf:errors><p class="compalsary">*</p>
+			</li>
 			<li>
 				<label for="nationality">Your Nationality:</label><sf:input type="text" name="nationality"
 				id="nationality" path="nationality"/>
 			<sf:errors
-						path="nationality" style="color:red;"></sf:errors>
+						path="nationality" style="color:red;"></sf:errors><p class="compalsary">*</p>
+			</li>
+			<li>
+				<label for="haveexperience">Have Experience of Describing Image (for someone with visual impairment) :</label><sf:select id="haveexperience" path="haveexperience">
+					<sf:option value="">Select</sf:option>
+					<sf:option value="yes">Yes</sf:option>
+					<sf:option value="no">No</sf:option>
+				</sf:select>
+			<sf:errors
+						path="haveexperience" style="color:red;"></sf:errors><p class="compalsary">*</p>
+			</li>
+			<li>
+				<label for="isawareof">Image accessibility is more about :</label><sf:select id="isawareof" path="isawareof">
+					<sf:option value="">Select</sf:option>
+					<sf:option value="no">High Quality Images</sf:option>
+					<sf:option value="no">Understandable Images for Normal People</sf:option>
+					<sf:option value="yes">Understandable Images for Diverse user Group</sf:option>
+				</sf:select>
+			<sf:errors
+						path="isawareof" style="color:red;"></sf:errors><p class="compalsary">*</p>
 			</li>
 			<li>
 				<label for="email">Your Email:</label><sf:input type="text" name="email"
 				id="email" path="email"/>
 			<sf:errors
-						path="email" style="color:red;"></sf:errors>
+						path="email" style="color:red;"></sf:errors><p class="compalsary">*</p>
 			</li>
 			<li style="border:0px solid #fff"><p style="color:red">${message}</p></li>
 			<li>
