@@ -108,7 +108,12 @@ public class UserDao {
 			source.addValue("email", userDetail.getEmail());
 			source.addValue("nationality", userDetail.getNationality());
 			source.addValue("education", userDetail.getEducation());
-			String sql="Insert into userdetail(age, gender, email,nationality,education)values(:age,:gender,:email,:nationality,:education)";
+			source.addValue("profession", userDetail.getProfession());
+			source.addValue("englishlevel", userDetail.getEnglishlevel());
+			source.addValue("englishspeaker", userDetail.getEnglishspeaker());
+			source.addValue("haveexperience", userDetail.getHaveexperience());
+			source.addValue("isawareof", userDetail.getIsawareof());
+			String sql="Insert into userdetail(age, gender, email,nationality,education,profession,englishlevel,englishspeaker,haveexperience,isawareof)values(:age,:gender,:email,:nationality,:education,:profession,:englishlevel,:englishspeaker,:haveexperience,:isawareof)";
 			return param.update(sql, source);
 	
 		
