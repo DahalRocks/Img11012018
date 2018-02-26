@@ -25,6 +25,30 @@ public class UserDetail {
    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Email address is not in a proper format!!")
 	private String email;
 	
+	@NotEmpty(message="Profession field can not be empty!!")
+	private String profession;
+	@NotEmpty(message="English Speaker field can not be empty!!")
+	private String englishspeaker;
+	@NotEmpty(message="English Level field can not be empty!!")
+	private String englishlevel;
+	@NotEmpty(message="Experience field can not be empty!!")
+	private String haveexperience;
+	@NotEmpty(message="Image accessibility field can not be empty!!")
+	private String isawareof;
+	
+	public String getProfession() {
+		return profession;
+	}
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+	
+	public String getEnglishlevel() {
+		return englishlevel;
+	}
+	public void setEnglishlevel(String englishlevel) {
+		this.englishlevel = englishlevel;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -33,6 +57,24 @@ public class UserDetail {
 	}
 	public String getAge() {
 		return age;
+	}
+	public String getEnglishspeaker() {
+		return englishspeaker;
+	}
+	public void setEnglishspeaker(String englishspeaker) {
+		this.englishspeaker = englishspeaker;
+	}
+	public String getHaveexperience() {
+		return haveexperience;
+	}
+	public void setHaveexperience(String haveexperience) {
+		this.haveexperience = haveexperience;
+	}
+	public String getIsawareof() {
+		return isawareof;
+	}
+	public void setIsawareof(String isawareof) {
+		this.isawareof = isawareof;
 	}
 	public void setAge(String age) {
 		this.age = age;
