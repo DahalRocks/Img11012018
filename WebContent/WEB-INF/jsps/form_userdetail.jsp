@@ -35,7 +35,7 @@
 		commandName="userDetail" class="form-style-7">
 		<ul>
 		
-			<li><p style="font-size:25px;font-weight:bold;font-family:arial">Please enter the following information</p></li>
+			<li><p style="font-size:25px;font-weight:bold;font-family:arial">Please Enter the Following Information</p></li>
 			<li><label for="age">Your Age Group:</label><sf:select path="age">
 				<sf:option value="">Select</sf:option>
 				<sf:option value="1">15-20</sf:option>
@@ -69,7 +69,7 @@
 					<sf:option value="journalist">Journalist</sf:option>
 					<sf:option value="researcher">Researcher</sf:option>
 					<sf:option value="software-developer">Software Developer</sf:option>
-					<sf:option value="Web-Worker">Web worker</sf:option>
+					<sf:option value="Web-Worker">Web Workers</sf:option>
 					<sf:option value="Other">Other</sf:option>
 				</sf:select>
 			<sf:errors
@@ -101,7 +101,7 @@
 						path="nationality" style="color:red;"></sf:errors><p class="compalsary">*</p>
 			</li>
 			<li>
-				<label for="haveexperience">Have Experience of Describing Image (for someone with visual impairment) :</label><sf:select id="haveexperience" path="haveexperience">
+				<label for="haveexperience">Have Previous Experience of Describing Images (for Visually Impaired) :</label><sf:select id="haveexperience" path="haveexperience">
 					<sf:option value="">Select</sf:option>
 					<sf:option value="yes">Yes</sf:option>
 					<sf:option value="no">No</sf:option>
@@ -110,11 +110,11 @@
 						path="haveexperience" style="color:red;"></sf:errors><p class="compalsary">*</p>
 			</li>
 			<li>
-				<label for="isawareof">Image accessibility is more about :</label><sf:select id="isawareof" path="isawareof">
+				<label for="isawareof">What is an Image Accessibility? It is more About :</label><sf:select id="isawareof" path="isawareof">
 					<sf:option value="">Select</sf:option>
-					<sf:option value="no">High Quality Images</sf:option>
-					<sf:option value="no">Understandable Images for Normal People</sf:option>
-					<sf:option value="yes">Understandable Images for Diverse user Group</sf:option>
+					<sf:option value="no">High Quality Image</sf:option>
+					<sf:option value="no">Image in a Small size</sf:option>
+					<sf:option value="yes">Understandable Image for Diverse user Group</sf:option>
 				</sf:select>
 			<sf:errors
 						path="isawareof" style="color:red;"></sf:errors><p class="compalsary">*</p>
