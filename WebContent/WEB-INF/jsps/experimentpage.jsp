@@ -782,7 +782,7 @@ div.radio-div p {
 										$('.guidline-div').html('');
 										/* $('.divGuideTitle').remove(); */
 										var motivatehtml='<p class="guideline-p" style="font-family:arial;color:gray;font-size:26px">';
-										motivatehtml+='Please look at the example below to make your description better</p>'
+										motivatehtml+='This time, please look at the example below before starting to write the description</p>'
 										$('.guidline-div').html(motivatehtml);
 										var progresshtml = "";
 										progresshtml += '<div class="round-image-number">';
@@ -820,7 +820,7 @@ div.radio-div p {
 												$('.hint-div').html("");
 												$('.hint-div').html(hinthtml);
 												var motivatehtml='<p class="guideline-p" style="font-family:arial;color:orange;font-size:26px">';
-												motivatehtml+='This time you get very similar image as an example to improve your descriptions even better</p>'
+												motivatehtml+='Here, you get the similar image as an example. Look at it first before writing the description</p>'
 												$('.guidline-div').html(motivatehtml);
 												var progresshtml = "";
 												progresshtml += '<div class="round-image-number">';
