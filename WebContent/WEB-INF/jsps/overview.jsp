@@ -27,12 +27,12 @@
         </header>
         <section class=" row introduction-section">
             <div><span>Consent Form</span></div>
-            <div><span>Title of Study:</span>Evaluation of Three Different Supportive Hints for Writing Image Description </div>
+            <div><span>Title of Study:</span>Evaluation of Supportive Hints for Writing Image Description </div>
             <div class="investigator-info"><p><span>Investigator</span></p><p><span>Name:</span> Dhruba Dahal</p><p><span>Department:</span> Computer Science </p><p> <span>Email:</span> s310279@stud.hioa.no</p></div>
                         
             <div class="sub-heading">Introduction</div>
             <div class="intro-box">
-                <p>This research is about writing image description. You are being invited to participate in an online experiment where you will be writing text descriptions for several images. The overall purpose of this research is to find the most usable way of helping people to make them write better image description.
+                <p>This research is about writing the image/photo description. An image/photo description is a textual explanation about what the image/photo contains in it. You are being invited to participate in an online experiment where you will be writing several text descriptions for different images.
                 </p>
             </div>
             
@@ -42,9 +42,9 @@
             <div class="concent-box">
                 <p>If you agree to be a participant then you will be asked to do the following:</p>
                 <p><span>1. Pre-Questionnaires:</span></p>
-                <p>You need to complete a Questionnaire based on your personal information</p>
+                <p>You need to complete a questionnaire based on the general information</p>
                 <p><span>2. Do Experiment:</span></p>
-                <p>In this stage you will be provided three different images in each round of the experiment. There will be three rounds:first, second, and third round. Each round will start automatically when you finish writing for the last round. Finally, the evaluation round will start, where you will be provided nine different image descriptions written by other participants and you will be responsible to provide ratings for those descriptions as an evaluation. The instruction will be provided in the evaluation stage that explains on what basis you will perform the evaluation.</p>
+                <p>In this experiment, there will be three rounds:first, second, and third round. You will be provided three different images in each round.The next round will start automatically when you finish writing for the current round. The overall experiment takes around 10 minutes.</p>
                 <p><span>Voluntary Participation:</span></p>
                 <p>Your participation in this study is completely voluntary.</p>
                 <p><span>Right to ask Questions and Report Concerns:</span></p>
