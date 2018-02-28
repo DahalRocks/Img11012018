@@ -44,7 +44,7 @@
                 <p><span>1. Pre-Questionnaires:</span></p>
                 <p>You need to complete a questionnaire based on the general information</p>
                 <p><span>2. Do Experiment:</span></p>
-                <p>In this experiment, there will be three rounds:first, second, and third round. You will be provided three different images in each round.The next round will start automatically when you finish writing for the current round. The overall experiment takes around 10 minutes.</p>
+                <p>In this experiment, there will be four rounds:first, second, third, and the fourth round which is the evaluation round. You will be provided three different images in each round.The next round will start automatically when you finish writing for the current round. The overall experiment takes around 10 minutes.</p>
                 <p><span>Voluntary Participation:</span></p>
                 <p>Your participation in this study is completely voluntary.</p>
                 <p><span>Right to ask Questions and Report Concerns:</span></p>
