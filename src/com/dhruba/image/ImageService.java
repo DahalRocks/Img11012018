@@ -207,6 +207,26 @@ public class ImageService {
 			
 		}
 	}
+	
+	public boolean saveTestFile(TestImage image){
+		boolean result=true;
+		try {
+			imageDao.saveTestFile(image);
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
+	}
+	
+	public List<TestImage> selectTestFile(){
+		List<TestImage>lstImage=new ArrayList<>();
+		try {
+			lstImage=imageDao.selectTestFile();
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+		}
+		return lstImage;
+	}
 
 	/*public List<AdminImage> getImageWithRandomSubImg() {
 		List<AdminImage> lstImage = new ArrayList<AdminImage>();
@@ -287,6 +307,41 @@ public class ImageService {
 		try {
 			imageDao.saveEvaluation(objEvaluation);
 			imageDao.updateEvaluationStatus(objEvaluation);
+		} catch (DataAccessException e) {
+			isSaved = false;
+			
+		}
+		return isSaved;
+		
+	}
+
+	public AdminImage getDescriptionForHumanJudgement() {
+		try {
+			objAdminImage=imageDao.getDescriptionForHumanJudgement();
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+		}
+		return objAdminImage;
+	}
+
+	public List<AdminImage> getGuidelines(AdminImage objDescription) {
+		List<AdminImage> lstGuidelines = new ArrayList<AdminImage>();
+		try {
+			lstGuidelines=imageDao.getGuidelines(objDescription);
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+		}
+		return lstGuidelines;
+	}
+
+	public boolean saveHumanJudgement(List<AdminImage> lstDescription) {
+		boolean isSaved = true;
+		try {
+			for(AdminImage humanJudgement:lstDescription){
+				imageDao.saveHumanJudgement(humanJudgement);
+				imageDao.updateHumanJudgement(humanJudgement);
+			}
+					
 		} catch (DataAccessException e) {
 			isSaved = false;
 			
