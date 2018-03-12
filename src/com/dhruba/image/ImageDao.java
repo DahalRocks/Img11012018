@@ -287,7 +287,25 @@ public class ImageDao {
 		return param.update(sql, source);
 	}
 	
+	public int saveTestFile(TestImage image){
+		String sql="Insert into test (imagefile) values(:fileStream)";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("fileStream", image.getFileStream());
+		return param.update(sql, source);
+	}
 	
+	public List<TestImage>selectTestFile(){
+		String sql="Select * from test";
+		return param.query(sql, new RowMapper<TestImage>() {
+			@Override
+			public TestImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				TestImage image=new TestImage();
+				image.setImagefile(rs.getBlob("imagefile"));
+				return image;
+			}
+		});
+		
+	}
 
 	public List<AdminImage> getImageWithRandomSubImg() {
 		String sql="SELECT a.image_id,a.image_name,b.subimage_name,b.image_type,b.subimage_description FROM image a,subimage b where a.image_id=b.parent_id and b.image_type='random' order by rand() limit 3";
@@ -460,6 +478,66 @@ public class ImageDao {
 		source.addValue("isEvaluated", true);
 		source.addValue("imagedescriptionId", objEvaluation.getImagedescriptionid());
 		return param.update(sql, source);
+	}
+
+	public AdminImage getDescriptionForHumanJudgement() {
+		String sql = "SELECT  a.sub_image, a.imagedescription_id, a.image_description,b.image_name,b.image_type from imagedescription a, image b where a.image_id=b.image_id and a.description_evaluation='0' order by rand() limit 1";
+		List<AdminImage> lstAdminImage = param.query(sql, new RowMapper<AdminImage>() {
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image = new AdminImage();
+				image.setImagename(rs.getString("image_name"));
+				image.setImagedescriptionid(rs.getInt("imagedescription_id"));
+				image.setImagedescription(rs.getString("image_description"));
+				image.setSubimagename(rs.getString("sub_image"));
+				image.setImagetype(rs.getString("image_type"));
+				return image;
+			}
+		});
+		if (lstAdminImage.isEmpty()) {
+			return null;
+		} else if (lstAdminImage.size() == 1) {
+			return lstAdminImage.get(0);
+		} else {
+			return lstAdminImage.get(0);
+		}
+		
+	}
+
+	public List<AdminImage> getGuidelines(AdminImage objDescription) {
+		String sql="SELECT * FROM graph.guidelines where guideline_type='general' or guideline_type=:guidelineType";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("guidelineType", objDescription.getImagetype());
+		
+		return param.query(sql, source, new RowMapper<AdminImage>() {
+
+			@Override
+			public AdminImage mapRow(ResultSet rs, int rowNum) throws SQLException {
+				AdminImage image=new AdminImage();
+				image.setGuidelineid(rs.getInt("guideline_id"));
+				image.setGuideline(rs.getString("guideline"));
+				image.setGuideline_type(rs.getString("guideline_type"));
+				return image;
+			}
+		});
+	}
+
+	public int saveHumanJudgement(AdminImage humanJudgement) {
+		String sql="Insert into human_judgement(imagedescription_id,evaluation_rating,guideline_id) values(:imageDescriptionId,:evaluationRating,:guidelineId)";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("imageDescriptionId", humanJudgement.getImagedescriptionid());
+		source.addValue("evaluationRating", humanJudgement.getRating());
+		source.addValue("guidelineId", humanJudgement.getGuidelineid());
+		return param.update(sql, source);
+		
+	}
+
+	public int updateHumanJudgement(AdminImage humanJudgement) {
+		String sql="Update imagedescription set description_evaluation='1' where imagedescription_id=:imagedescriptionId";
+		MapSqlParameterSource source=new MapSqlParameterSource();
+		source.addValue("imagedescriptionId", humanJudgement.getImagedescriptionid());
+		return param.update(sql, source);
+		
 	}
 	
 	
