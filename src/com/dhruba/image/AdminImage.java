@@ -33,10 +33,37 @@ public class AdminImage {
 	private String parentimagetype;
 	private int difficultyrating;
 	private float timetaken;
+	private int guidelineid;
+	private String guideline;
+	private String guideline_type;
+	private int rating;
 	
 	
-	 
 	
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	public int getGuidelineid() {
+		return guidelineid;
+	}
+	public void setGuidelineid(int guidelineid) {
+		this.guidelineid = guidelineid;
+	}
+	public String getGuideline() {
+		return guideline;
+	}
+	public void setGuideline(String guideline) {
+		this.guideline = guideline;
+	}
+	public String getGuideline_type() {
+		return guideline_type;
+	}
+	public void setGuideline_type(String guideline_type) {
+		this.guideline_type = guideline_type;
+	}
 	public float getTimetaken() {
 		return timetaken;
 	}
