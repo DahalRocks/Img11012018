@@ -1,32 +1,48 @@
 package com.dhruba.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import javax.validation.Valid;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dhruba.image.AdminImage;
 import com.dhruba.image.Image;
 import com.dhruba.image.ImageService;
+import com.dhruba.image.TestImage;
 import com.dhruba.page.Page;
 import com.dhruba.page.PageService;
 import com.dhruba.reminder.Reminder;
@@ -35,6 +51,7 @@ import com.dhruba.text.TextContentService;
 import com.dhruba.user.User;
 import com.dhruba.user.UserDetail;
 import com.dhruba.user.UserService;
+import com.mysql.jdbc.Blob;
 
 @Controller
 @Component
@@ -61,6 +78,40 @@ public class MyController {
 	private UserService userService;
 	@Autowired
     private JavaMailSender mailSender;
+	@Autowired
+	private TestImage testImage;
+	@Autowired
+	ServletContext context;
+	
+	@RequestMapping("/evaluationform")
+	public String getEvaluaitonForm(Model model){
+		return "form_evaluation";
+	}
+	
+	@RequestMapping("/getdescriptionforhumanjudgement")
+	public String getDescriptionForHumanJudgement(Model model){
+		AdminImage objDescription=imageService.getDescriptionForHumanJudgement();
+		model.addAttribute("descriptionObject", objDescription);
+		List<AdminImage>lstGuidelines=imageService.getGuidelines(objDescription);
+		model.addAttribute("guidelinelist", lstGuidelines);
+		
+		return "form_evaluation";
+	}
+	
+	
+	@RequestMapping(value = "/saveHumanJudgement", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Object saveHumanJudgement(@RequestBody String strData,HttpSession session)
+			throws JsonParseException, JsonMappingException, IOException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		TypeReference<List<AdminImage>> mapType = new TypeReference<List<AdminImage>>() {};
+		List<AdminImage> lstDescription = mapper.readValue(strData, mapType);
+		imageService.saveHumanJudgement(lstDescription);
+		
+		String result = new String("true");
+		return result;	
+	}
+	
 
 	@RequestMapping("/getuserdetailform")
 	public String getUserDetail(Model model) {
@@ -68,10 +119,53 @@ public class MyController {
 		return "form_userdetail";
 	}
 	
+	
+	
 	@RequestMapping("/thankyoupage")
 	public String getThankyouPage(){
 		return "thankyou";
 	}
+	
+	@RequestMapping("/fileupload")
+	public String fileUpload(){
+		return "test";
+	}
+	
+	@RequestMapping("/tryMethod")
+	public String tryMethod(@RequestParam("file") MultipartFile file, HttpServletResponse response, Model model) throws SerialException, SQLException, IOException{
+		
+		testImage.setFileStream(file.getInputStream());
+		if(imageService.saveTestFile(testImage)){
+			List<TestImage>imgList=imageService.selectTestFile();
+			
+			for(TestImage img: imgList){
+				ByteArrayOutputStream baos=new ByteArrayOutputStream();
+				byte[]buff=new byte[1024];
+				java.sql.Blob blob=img.getImagefile();
+				InputStream in=blob.getBinaryStream();
+				int n = 0;
+			    while ((n=in.read(buff))>=0)
+			    {
+			        baos.write(buff, 0, n);
+
+			    }
+			    in.close();
+			    byte[] bytes = baos.toByteArray();
+			    byte[] encodeBase64 = Base64.encode(buff);
+			    String base64Encoded = new String(encodeBase64, "UTF-8");
+			    
+			    response.setContentType("image/jpeg");
+			    response.getOutputStream().write(bytes);
+			    response.getOutputStream().flush();
+			    response.getOutputStream().close();
+			    model.addAttribute("image",base64Encoded);
+			}
+					
+		}
+			
+		return "test";
+	}
+
 
 	@RequestMapping("/enteruser")
 	public String enterUserDetail(Model model, @Valid UserDetail userDetail, BindingResult result, ModelMap modelMap,
@@ -102,7 +196,7 @@ public class MyController {
 		        message+="password123";
 		        message+="\r\n";
 		        message+="\r\n";
-		        message+=" Pleas go to this link :http://tomcat-datacollection.193b.starter-ca-central-1.openshiftapps.com/createuserlogin";
+		        message+=" Pleas go to this link :http://localhost:8080/SimpleWebPage/createuserlogin";
 		        message+="\r\n";
 		        message+="\r\n";
 		        message+="Thank you!!";
